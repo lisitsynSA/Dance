@@ -9,8 +9,8 @@
 
 MainWindow::MainWindow()
 {
-    dancelist = new dance_list;
-    danceclass = new dance_class(dancelist);
+    dancelist = new dance_list(this);
+    danceclass = new dance_class(dancelist, this);
     setCentralWidget(danceclass);
 
     createActions();
@@ -294,7 +294,7 @@ void MainWindow::createToolBars()
 
 void MainWindow::createStatusBar()
 {
-    dateLabel = new QLabel();
+    dateLabel = new QLabel(this);
     dateLabel->setAlignment(Qt::AlignHCenter);
     dateLabel->setMinimumSize(dateLabel->sizeHint());
 
