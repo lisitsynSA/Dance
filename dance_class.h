@@ -51,7 +51,7 @@ private:
     QListView *listView;
     QStringListModel *model;
     QList<QDate*> all_classes;
-    QList<int> current_class;//TODO:QStringList
+    QStringList current_class;
     QDate current_date;
 
     dance_list *dancelist;

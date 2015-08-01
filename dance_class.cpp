@@ -115,7 +115,7 @@ bool dance_class::readFile(const QString &fileName)
         return false;
     }
 
-    int temp = 0;
+    QString temp;
     QApplication::setOverrideCursor(Qt::WaitCursor);
     while (!in.atEnd()) {
         in >> temp;
@@ -141,7 +141,7 @@ bool dance_class::writeFile(const QString &fileName)
     out.setVersion(QDataStream::Qt_4_8);
 
     out << quint32(MagicNumber);
-    QList<int>::const_iterator it = current_class.begin();
+    QStringList::const_iterator it = current_class.begin();
     QApplication::setOverrideCursor(Qt::WaitCursor);
     while (it != current_class.end())
     {
