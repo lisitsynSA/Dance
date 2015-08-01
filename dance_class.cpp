@@ -158,13 +158,3 @@ void dance_class::changed_date(QDate date)
     qDebug() << "CHANGED DATE" << date;
     emit modified_date();
 }
-
-void dance_class::get_current_dance(QStringList list) const
-{
-    QList<int>::const_iterator it = current_class.begin();
-    while (it != current_class.end())
-    {
-        list.push_back(dancelist->get_name_dance(*it));
-        it++;
-    }
-}

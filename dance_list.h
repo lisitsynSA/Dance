@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QDebug>
+//#include <edit_dialog.h>
+//#include <find_dialog.h>
+//#include <new_dialog.h>
 
 class dance_t;
 

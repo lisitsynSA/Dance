@@ -23,7 +23,6 @@ private slots:
     void open();
     bool save();
     bool saveAs();
-    void find();
     void about();
     void openRecentFile();
     void updateStatusBar();

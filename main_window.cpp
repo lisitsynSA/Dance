@@ -1,9 +1,6 @@
 #include <QtGui>
 
-//#include "finddialog.h"
-//#include "gotocelldialog.h"
 #include "main_window.h"
-//#include "sortdialog.h"
 #include "dance_class.h"
 #include "dance_list.h"
 
@@ -20,8 +17,6 @@ MainWindow::MainWindow()
     createStatusBar();
 
     readSettings();
-
- //   findDialog = 0;
 
     setWindowIcon(QIcon(":/images/icon.png"));
     setCurrentFile("");
@@ -76,25 +71,6 @@ bool MainWindow::saveAs()
     return saveFile(fileName);
 }
 
-void MainWindow::find()
-{
-/*    if (!findDialog) {
-        findDialog = new FindDialog(this);
-        connect(findDialog, SIGNAL(findNext(const QString &,
-                                            Qt::CaseSensitivity)),
-                spreadsheet, SLOT(findNext(const QString &,
-                                           Qt::CaseSensitivity)));
-        connect(findDialog, SIGNAL(findPrevious(const QString &,
-                                                Qt::CaseSensitivity)),
-                spreadsheet, SLOT(findPrevious(const QString &,
-                                               Qt::CaseSensitivity)));
-    }
-
-    findDialog->show();
-    findDialog->raise();
-    findDialog->activateWindow();*/
-}
-
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Dance Class"),
@@ -130,24 +106,28 @@ void MainWindow::createActions()
     newAction->setIcon(QIcon(":/images/new.png"));
     newAction->setShortcut(QKeySequence::New);
     newAction->setStatusTip(tr("Create a new spreadsheet file"));
-    connect(newAction, SIGNAL(triggered()), this, SLOT(newFile()));
+    connect(newAction, SIGNAL(triggered()),
+            this, SLOT(newFile()));
 
     openAction = new QAction(tr("&Open..."), this);
     openAction->setIcon(QIcon(":/images/open.png"));
     openAction->setShortcut(QKeySequence::Open);
     openAction->setStatusTip(tr("Open an existing spreadsheet file"));
-    connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
+    connect(openAction, SIGNAL(triggered()),
+            this, SLOT(open()));
 
     saveAction = new QAction(tr("&Save"), this);
     saveAction->setIcon(QIcon(":/images/save.png"));
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save the spreadsheet to disk"));
-    connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
+    connect(saveAction, SIGNAL(triggered()),
+            this, SLOT(save()));
 
     saveAsAction = new QAction(tr("Save &As..."), this);
     saveAsAction->setStatusTip(tr("Save the spreadsheet under a new "
                                   "name"));
-    connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
+    connect(saveAsAction, SIGNAL(triggered()),
+            this, SLOT(saveAs()));
 
     for (int i = 0; i < MaxRecentFiles; ++i) {
         recentFileActions[i] = new QAction(this);
@@ -159,21 +139,24 @@ void MainWindow::createActions()
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcut(tr("Ctrl+Q"));
     exitAction->setStatusTip(tr("Exit the application"));
-    connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(exitAction, SIGNAL(triggered()),
+            this, SLOT(close()));
 
     loadAction = new QAction(tr("&Load"), this);
     loadAction->setShortcut(QKeySequence::Copy);
     loadAction->setIcon(QIcon(":/images/load.png"));
     loadAction->setStatusTip(tr("Copy current dance class "
                                "to the buffer"));
-    connect(loadAction, SIGNAL(triggered()), danceclass, SLOT(load_to_buffer()));
+    connect(loadAction, SIGNAL(triggered()),
+            danceclass, SLOT(load_to_buffer()));
 
     addAction = new QAction(tr("&Add"), this);
     addAction->setIcon(QIcon(":/images/plus.png"));
     addAction->setShortcut(tr("Insert"));
     addAction->setStatusTip(tr("Add the new dance "
                                "to the current lesson"));
-    connect(addAction, SIGNAL(triggered()), danceclass, SLOT(add_in_lesson()));
+    connect(addAction, SIGNAL(triggered()),
+            danceclass, SLOT(add_in_lesson()));
 
     deleteAction = new QAction(tr("&Delete"), this);
     deleteAction->setIcon(QIcon(":/images/minus.png"));
@@ -225,11 +208,13 @@ void MainWindow::createActions()
 
     aboutAction = new QAction(tr("&About"), this);
     aboutAction->setStatusTip(tr("Show the application's About box"));
-    connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
+    connect(aboutAction, SIGNAL(triggered()),
+            this, SLOT(about()));
 
     aboutQtAction = new QAction(tr("About &Qt"), this);
     aboutQtAction->setStatusTip(tr("Show the Qt library's About box"));
-    connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    connect(aboutQtAction, SIGNAL(triggered()),
+            qApp, SLOT(aboutQt()));
 }
 
 void MainWindow::createMenus()
@@ -294,7 +279,7 @@ void MainWindow::createToolBars()
 
 void MainWindow::createStatusBar()
 {
-    dateLabel = new QLabel(this);
+    dateLabel = new QLabel("00.00.00 (AA)",this);
     dateLabel->setAlignment(Qt::AlignHCenter);
     dateLabel->setMinimumSize(dateLabel->sizeHint());
 
