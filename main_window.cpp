@@ -115,7 +115,7 @@ void MainWindow::openRecentFile()
 
 void MainWindow::updateStatusBar()
 {
-    //dateLabel->setText(...->currentdate());
+    dateLabel->setText(danceclass->get_current_date().toString("dd.MM.yy (ddd)"));
 }
 
 void MainWindow::danceclassModified()
@@ -166,7 +166,7 @@ void MainWindow::createActions()
     loadAction->setIcon(QIcon(":/images/load.png"));
     loadAction->setStatusTip(tr("Copy current dance class "
                                "to the buffer"));
-    connect(loadAction, SIGNAL(triggered()), danceclass, SLOT(load_buffer()));
+    connect(loadAction, SIGNAL(triggered()), danceclass, SLOT(load_to_buffer()));
 
     addAction = new QAction(tr("&Add"), this);
     addAction->setIcon(QIcon(":/images/plus.png"));
@@ -294,7 +294,7 @@ void MainWindow::createToolBars()
 
 void MainWindow::createStatusBar()
 {
-    dateLabel = new QLabel(" 01.01.2000 ");
+    dateLabel = new QLabel();
     dateLabel->setAlignment(Qt::AlignHCenter);
     dateLabel->setMinimumSize(dateLabel->sizeHint());
 
@@ -302,6 +302,8 @@ void MainWindow::createStatusBar()
 
     connect(danceclass, SIGNAL(modified_class()),
             this, SLOT(danceclassModified()));
+    connect(danceclass, SIGNAL(modified_date()),
+            this, SLOT(updateStatusBar()));
 
     updateStatusBar();
 }

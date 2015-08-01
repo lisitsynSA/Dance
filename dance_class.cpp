@@ -18,7 +18,11 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     listView->setModel(model);
     listView->setEditTriggers(QAbstractItemView::DoubleClicked);
     calendar = new QCalendarWidget(this);
-
+    calendar->setGridVisible(true);
+    calendar->setFirstDayOfWeek(Qt::Monday);
+    connect(calendar, SIGNAL(clicked(QDate)),
+            this, SLOT(changed_date(QDate)));
+    current_date = calendar->selectedDate();
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
     rightLayout->addStretch();
@@ -146,6 +150,13 @@ bool dance_class::writeFile(const QString &fileName)
     }
     QApplication::restoreOverrideCursor();
     return true;
+}
+
+void dance_class::changed_date(QDate date)
+{
+    current_date = date;
+    qDebug() << "CHANGED DATE" << date;
+    emit modified_date();
 }
 
 void dance_class::get_current_dance(QStringList list) const
