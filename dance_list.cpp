@@ -7,6 +7,7 @@ dance_list::dance_list(QWidget *parent) :
 {
     if (!readFile())
         writeFile();
+    new_dance_dialog = 0;
 }
 
 dance_list::~dance_list()
@@ -86,6 +87,26 @@ void dance_list::make_alphabetical_order()
 void dance_list::make_fast_find_order()
 {
 
+}
+
+void dance_list::add_dance(dance_t* dance)
+{
+    dance_vector.push_back(dance);
+    make_alphabetical_order();
+    make_fast_find_order();
+}
+
+void dance_list::list_new()
+{
+    if (!new_dance_dialog) {
+        new_dance_dialog = new new_dance_d(this);
+        connect(new_dance_dialog, SIGNAL(send_dance(dance_t*)),
+                this, SLOT(list_add(dance_t*)));
+    }
+
+    new_dance_dialog->show();
+    new_dance_dialog->raise();
+    new_dance_dialog->activateWindow();
 }
 
 QString dance_list::get_name_dance(int place) const
