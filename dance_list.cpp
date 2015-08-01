@@ -48,6 +48,7 @@ bool dance_list::readFile()
     }
 
     make_alphabetical_order();
+    make_fast_find_order();
     QApplication::restoreOverrideCursor();
     return true;
 }
@@ -82,12 +83,22 @@ void dance_list::make_alphabetical_order()
 
 }
 
+void dance_list::make_fast_find_order()
+{
+
+}
+
 QString dance_list::get_name_dance(int place) const
 {
-    return dance_vector[place]->get_name();
+    return alph_order.value(place)->get_name();
 }
 
 dance_t* dance_list::get_dance(int place) const
 {
-    return dance_vector[place];
+    return alph_order.value(place);
+}
+
+dance_t* dance_list::get_dance(QString name) const
+{
+    return fast_find_order.value(name);
 }

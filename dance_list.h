@@ -16,6 +16,7 @@ public:
     bool writeFile();
     QString get_name_dance(int place) const;
     dance_t* get_dance(int place) const;
+    dance_t* get_dance(QString name) const;
 
 signals:
     void modified_list();
@@ -28,9 +29,11 @@ private:
     enum { MagicNumber = 0x7FFC883};
     QVector<dance_t*> dance_vector;
     QMap<int, dance_t*> alph_order;
+    QMap<QString, dance_t*> fast_find_order;
 
     bool readFile();
     void make_alphabetical_order();
+    void make_fast_find_order();
 };
 
 #endif // DANCE_LIST_H
