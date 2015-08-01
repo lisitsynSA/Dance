@@ -23,6 +23,10 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     connect(calendar, SIGNAL(clicked(QDate)),
             this, SLOT(changed_date(QDate)));
     current_date = calendar->selectedDate();
+    standart = calendar->dateTextFormat(current_date);
+    underline = standart;
+    underline.setFontPointSize(15);
+
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
     rightLayout->addStretch();

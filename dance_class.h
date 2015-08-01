@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QDate>
+#include <QTextCharFormat>
 //#include <add_dialog.h>
 //#include <del_dialog.h>
 
@@ -48,6 +49,8 @@ private slots:
 private:
     enum { MagicNumber = 0x7FFF883};
     QCalendarWidget *calendar;
+    QTextCharFormat standart;
+    QTextCharFormat underline;
     QListView *listView;
     QStringListModel *model;
     QList<QDate*> all_classes;
