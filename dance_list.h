@@ -10,6 +10,7 @@
 class dance_t;
 
 class dance_list : public QWidget
+// dance_list = dictionary of dances
 {
     Q_OBJECT
 public:

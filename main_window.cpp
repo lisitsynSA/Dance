@@ -168,20 +168,20 @@ void MainWindow::createActions()
 
     listEditAction = new QAction(tr("&Edit"), this);
     listEditAction->setIcon(QIcon(":/images/edit.png"));
-    listEditAction->setStatusTip(tr("Edit the list of the dance"));
+    listEditAction->setStatusTip(tr("Edit the dictionary of the dance"));
     connect(listEditAction, SIGNAL(triggered()),
             dancelist, SLOT(list_edit()));
 
     listFindAction = new QAction(tr("&Find"), this);
     listFindAction->setIcon(QIcon(":/images/find.png"));
     listFindAction->setShortcut(QKeySequence::Find);
-    listFindAction->setStatusTip(tr("Find a dance in the list"));
+    listFindAction->setStatusTip(tr("Find a dance in the dictionary"));
     connect(listFindAction, SIGNAL(triggered()),
             dancelist, SLOT(list_find()));
 
     listNewAction = new QAction(tr("&New"), this);
     listNewAction->setIcon(QIcon(":/images/new_dance.png"));
-    listNewAction->setStatusTip(tr("Create a new dance in the list"));
+    listNewAction->setStatusTip(tr("Create a new dance in the dictionary"));
     connect(listNewAction, SIGNAL(triggered()),
             dancelist, SLOT(list_new()));
 
@@ -219,7 +219,7 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
-    dance_classMenu = menuBar()->addMenu(tr("&Dance class"));
+    dance_classMenu = menuBar()->addMenu(tr("Dance &class"));
     dance_classMenu->addAction(newAction);
     dance_classMenu->addAction(openAction);
     dance_classMenu->addAction(saveAction);
@@ -235,7 +235,7 @@ void MainWindow::createMenus()
     editMenu->addAction(addAction);
     editMenu->addAction(deleteAction);
 
-    edit_listSubMenu = editMenu->addMenu(tr("&List of dance"));
+    edit_listSubMenu = editMenu->addMenu(tr("&Dictionary of dance"));
     edit_listSubMenu->addAction(listEditAction);
     edit_listSubMenu->addAction(listFindAction);
     edit_listSubMenu->addAction(listNewAction);
