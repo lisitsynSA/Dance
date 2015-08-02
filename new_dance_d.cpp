@@ -18,3 +18,9 @@ void new_dance_d::create_dance()
     emit send_dance(result);
     emit accept();
 }
+
+void new_dance_d::on_lineEdit_textChanged()
+{
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
+            lineEdit->hasAcceptableInput());
+}

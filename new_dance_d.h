@@ -15,6 +15,7 @@ signals:
     void send_dance(dance_t*);
 private slots:
     void create_dance();
+    void on_lineEdit_textChanged();
 };
 
 #endif // NEW_DANCE_D_H
