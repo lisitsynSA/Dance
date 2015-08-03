@@ -159,7 +159,7 @@ bool dance_class::writeFile(const QString &fileName)
 void dance_class::changed_date(QDate date)
 {
     current_date = date;
-    calendar->setDateTextFormat(current_date, underline);
+    //calendar->setDateTextFormat(current_date, underline);
     qDebug() << "CHANGED DATE" << date;
     emit modified_date();
 }

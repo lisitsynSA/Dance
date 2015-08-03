@@ -14,7 +14,10 @@ new_dance_d::new_dance_d(QWidget *parent)
 
 void new_dance_d::create_dance()
 {
-    dance_t* result = new dance_t();
+    dance_t* result = new dance_t(lineEdit->text(),
+                                  textEdit_short->toPlainText(),
+                                  textEdit_full->toPlainText(),
+                                  textEdit_music->toPlainText());
     emit send_dance(result);
     emit accept();
 }
