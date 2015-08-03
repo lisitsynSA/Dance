@@ -26,7 +26,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     standart = calendar->dateTextFormat(current_date);
     underline = standart;
     underline.setFontPointSize(15);
-
+    underline.setForeground(Qt::magenta);
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
     rightLayout->addStretch();
@@ -159,6 +159,7 @@ bool dance_class::writeFile(const QString &fileName)
 void dance_class::changed_date(QDate date)
 {
     current_date = date;
+    calendar->setDateTextFormat(current_date, underline);
     qDebug() << "CHANGED DATE" << date;
     emit modified_date();
 }

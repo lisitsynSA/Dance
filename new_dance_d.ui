@@ -50,7 +50,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit"/>
+        <widget class="QTextEdit" name="textEdit_full"/>
        </item>
       </layout>
      </item>
@@ -71,7 +71,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_2"/>
+        <widget class="QTextEdit" name="textEdit_short"/>
        </item>
        <item>
         <widget class="Line" name="line">
@@ -88,7 +88,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_3"/>
+        <widget class="QTextEdit" name="textEdit_music"/>
        </item>
       </layout>
      </item>
