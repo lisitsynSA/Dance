@@ -8,6 +8,7 @@ dance_list::dance_list(QWidget *parent) :
     if (!readFile())
         writeFile();
     new_dance_dialog = 0;
+    edit_list_dialog = 0;
 }
 
 dance_list::~dance_list()
@@ -96,8 +97,23 @@ void dance_list::add_dance(dance_t* dance)
     make_fast_find_order();
 }
 
-void dance_list::list_new()
+void dance_list::list_edit_button()
 {
+    qDebug() << "EDIT";
+    if (!edit_list_dialog) {
+        edit_list_dialog = new edit_list_d(this);
+        connect(edit_list_dialog, SIGNAL(edit_dance(dance_t*, dance_t*)),
+                this, SLOT(list_edit(dance_t*, dance_t*)));
+    }
+
+    edit_list_dialog->show();
+    edit_list_dialog->raise();
+    edit_list_dialog->activateWindow();
+}
+
+void dance_list::list_new_button()
+{
+    qDebug() << "NEW";
     if (!new_dance_dialog) {
         new_dance_dialog = new new_dance_d(this);
         connect(new_dance_dialog, SIGNAL(send_dance(dance_t*)),

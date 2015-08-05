@@ -170,20 +170,20 @@ void MainWindow::createActions()
     listEditAction->setIcon(QIcon(":/images/edit.png"));
     listEditAction->setStatusTip(tr("Edit the dictionary of the dance"));
     connect(listEditAction, SIGNAL(triggered()),
-            dancelist, SLOT(list_edit()));
+            dancelist, SLOT(list_edit_button()));
 
     listFindAction = new QAction(tr("&Find"), this);
     listFindAction->setIcon(QIcon(":/images/find.png"));
     listFindAction->setShortcut(QKeySequence::Find);
     listFindAction->setStatusTip(tr("Find a dance in the dictionary"));
     connect(listFindAction, SIGNAL(triggered()),
-            dancelist, SLOT(list_find()));
+            dancelist, SLOT(list_find_button()));
 
     listNewAction = new QAction(tr("&New"), this);
     listNewAction->setIcon(QIcon(":/images/new_dance.png"));
     listNewAction->setStatusTip(tr("Create a new dance in the dictionary"));
     connect(listNewAction, SIGNAL(triggered()),
-            dancelist, SLOT(list_new()));
+            dancelist, SLOT(list_new_button()));
 
     showSpeedAction = new QAction(tr("Show &Speed"), this);
     showSpeedAction->setCheckable(true);

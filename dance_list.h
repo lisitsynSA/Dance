@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QDebug>
 #include "new_dance_d.h"
-//#include <edit_dialog.h>
+#include "edit_list_d.h"
 //#include <find_dialog.h>
 
 class dance_t;
@@ -26,9 +26,9 @@ signals:
     void modified_list();
 
 public slots:
-    void list_edit(){ qDebug() << "EDIT"; }
-    void list_find(){ qDebug() << "FIND"; }
-    void list_new();
+    void list_edit_button();
+    void list_find_button(){ qDebug() << "FIND"; }
+    void list_new_button();
     void list_add(dance_t * dance) {add_dance(dance);
                                     qDebug() << "New dance";}
 private:
@@ -38,6 +38,7 @@ private:
     QMap<QString, dance_t*> fast_find_order;
 
     new_dance_d* new_dance_dialog;
+    edit_list_d* edit_list_dialog;
     void add_dance(dance_t* dance);
     bool readFile();
     void make_alphabetical_order();
