@@ -1,29 +1,36 @@
 #include <QtGui>
 
 #include "new_dance_d.h"
+#include "ui_new_dance_d.h"
 
-new_dance_d::new_dance_d(QWidget *parent)
-    : QDialog(parent)
+new_dance_d::new_dance_d(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::new_dance_d)
 {
-    setupUi(this);
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->setupUi(this);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(create_dance()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(create_dance()));
+    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+}
+
+new_dance_d::~new_dance_d()
+{
+    delete ui;
 }
 
 void new_dance_d::create_dance()
 {
-    dance_t* result = new dance_t(lineEdit->text(),
-                                  textEdit_short->toPlainText(),
-                                  textEdit_full->toPlainText(),
-                                  textEdit_music->toPlainText());
+    dance_t* result = new dance_t(ui->lineEdit->text(),
+                                  ui->textEdit_short->toPlainText(),
+                                  ui->textEdit_full->toPlainText(),
+                                  ui->textEdit_music->toPlainText());
     emit send_dance(result);
     emit accept();
 }
 
 void new_dance_d::on_lineEdit_textChanged()
 {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
-            lineEdit->hasAcceptableInput());
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
+            ui->lineEdit->hasAcceptableInput());
 }
