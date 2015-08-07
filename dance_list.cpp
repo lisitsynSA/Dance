@@ -100,12 +100,11 @@ void dance_list::add_dance(dance_t* dance)
 void dance_list::list_edit_button()
 {
     qDebug() << "EDIT";
-    if (!edit_list_dialog) {
-        edit_list_dialog = new edit_list_d(this);
-        connect(edit_list_dialog, SIGNAL(edit_dance(dance_t*, dance_t*)),
-                this, SLOT(list_edit(dance_t*, dance_t*)));
+    if (!edit_list_dialog)
+    {
+        edit_list_dialog = new edit_list_d(this, (QWidget*) this);
     }
-
+    edit_list_dialog->update_dancelist();
     edit_list_dialog->show();
     edit_list_dialog->raise();
     edit_list_dialog->activateWindow();
@@ -114,7 +113,8 @@ void dance_list::list_edit_button()
 void dance_list::list_new_button()
 {
     qDebug() << "NEW";
-    if (!new_dance_dialog) {
+    if (!new_dance_dialog)
+    {
         new_dance_dialog = new new_dance_d(this);
         connect(new_dance_dialog, SIGNAL(send_dance(dance_t*)),
                 this, SLOT(list_add(dance_t*)));
