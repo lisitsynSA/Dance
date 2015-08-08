@@ -9,6 +9,7 @@ dance_list::dance_list(QWidget *parent) :
         writeFile();
     new_dance_dialog = 0;
     edit_list_dialog = 0;
+    modified = false;
 }
 
 dance_list::~dance_list()
@@ -82,7 +83,7 @@ bool dance_list::writeFile()
 
 void dance_list::make_alphabetical_order()
 {
-
+    //qsort(dance_vector)
 }
 
 void dance_list::make_fast_find_order()
@@ -102,9 +103,10 @@ void dance_list::list_edit_button()
     qDebug() << "EDIT";
     if (!edit_list_dialog)
     {
-        edit_list_dialog = new edit_list_d(this, (QWidget*) this);
+        edit_list_dialog = new edit_list_d(&dance_vector, this);
     }
-    edit_list_dialog->update_dancelist();
+    if (modified)
+        edit_list_dialog->update_dancelist();
     edit_list_dialog->show();
     edit_list_dialog->raise();
     edit_list_dialog->activateWindow();
@@ -118,6 +120,8 @@ void dance_list::list_new_button()
         new_dance_dialog = new new_dance_d(this);
         connect(new_dance_dialog, SIGNAL(send_dance(dance_t*)),
                 this, SLOT(list_add(dance_t*)));
+        connect(new_dance_dialog, SIGNAL(accepted()),
+                this, SLOT(modified_list_slot()));
     }
 
     new_dance_dialog->show();
@@ -125,17 +129,24 @@ void dance_list::list_new_button()
     new_dance_dialog->activateWindow();
 }
 
+void dance_list::modified_list_slot()
+{
+    qDebug() << "LIST IS MODIFIED";
+    modified = true;
+    emit modified_list();
+}
+
 QString dance_list::get_name_dance(int place) const
 {
-    return alph_order.value(place)->get_name();
+    return dance_vector[place]->get_name();
 }
 
 dance_t* dance_list::get_dance(int place) const
 {
-    return alph_order.value(place);
+    return dance_vector[place];
 }
 
 dance_t* dance_list::get_dance(QString name) const
 {
-    return fast_find_order.value(name);
+    return fast_find_order[name];
 }

@@ -27,10 +27,15 @@ void new_dance_d::create_dance()
                                   ui->textEdit_music->toPlainText());
     emit send_dance(result);
     emit accept();
+    ui->lineEdit->setText("");
+    ui->textEdit_short->setText("");
+    ui->textEdit_full->setText("");
+    ui->textEdit_music->setText("");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 void new_dance_d::on_lineEdit_textChanged()
 {
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(
-            ui->lineEdit->hasAcceptableInput());
+                !(ui->lineEdit->text() == ""));
 }

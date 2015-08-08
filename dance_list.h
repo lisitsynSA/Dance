@@ -21,6 +21,8 @@ public:
     QString get_name_dance(int place) const;
     dance_t* get_dance(int place) const;
     dance_t* get_dance(QString name) const;
+    int get_size() const{ return dance_vector.size();}
+    bool is_modified() const{ return modified;}
 
 signals:
     void modified_list();
@@ -31,11 +33,12 @@ public slots:
     void list_new_button();
     void list_add(dance_t * dance) {add_dance(dance);
                                     qDebug() << "New dance";}
+    void modified_list_slot();
 private:
     enum { MagicNumber = 0x7FFC883};
     QVector<dance_t*> dance_vector;
-    QMap<int, dance_t*> alph_order;
     QMap<QString, dance_t*> fast_find_order;
+    bool modified;
 
     new_dance_d* new_dance_dialog;
     edit_list_d* edit_list_dialog;
