@@ -9,7 +9,14 @@ edit_list_d::edit_list_d(QVector<dance_t*>* init_dance_vector, QWidget* parent):
     ui->setupUi(this);
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(load_dance(int)));
-    ui->comboBox->setDuplicatesEnabled(false);
+    connect(this, SIGNAL(accepted()),
+            this, SLOT(save_dance()));
+    connect(ui->textEdit_full, SIGNAL(textChanged()),
+            this, SLOT(list_changed()));
+    connect(ui->textEdit_short, SIGNAL(textChanged()),
+            this, SLOT(list_changed()));
+    connect(ui->textEdit_music, SIGNAL(textChanged()),
+            this, SLOT(list_changed()));
     update_dancelist();
     load_dance(0);
 }
@@ -26,5 +33,28 @@ void edit_list_d::update_dancelist()
     while (i != dance_vector->constEnd()) {
         ui->comboBox->addItem((*i)->get_name());
         ++i;
+    }
+}
+
+void edit_list_d::load_dance(int dance)
+{
+    if ((0 <= dance) && (dance < dance_vector->size()))
+    {
+        qDebug() << "LOAD DANCE FOR EDITTING: " << dance;
+
+        ui->textEdit_short->setText((*dance_vector)[dance]->get_short_description());
+        ui->textEdit_full->setText((*dance_vector)[dance]->get_description());
+        ui->textEdit_music->setText((*dance_vector)[dance]->get_music());
+    }
+}
+
+void edit_list_d::save_dance()
+{
+    int dance = ui->comboBox->currentIndex();
+    if (modified)
+    {
+        (*dance_vector)[dance]->set_music(ui->textEdit_music->toPlainText());
+        (*dance_vector)[dance]->set_description(ui->textEdit_full->toPlainText());
+        (*dance_vector)[dance]->set_short_description(ui->textEdit_short->toPlainText());
     }
 }

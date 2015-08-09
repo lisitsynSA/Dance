@@ -19,6 +19,10 @@ public:
     QString get_description() const { return *description; }
     QString get_music() const { return *music; }
 
+    QString set_short_description(QString init) { return *short_description = init; }
+    QString set_description(QString init) { return *description = init; }
+    QString set_music(QString init) { return *music = init; }
+
     friend QDataStream& operator << (QDataStream& stream, dance_t &op);
     friend QDataStream& operator << (QDataStream& stream, const dance_t &op);
     friend QDataStream& operator >> (QDataStream& stream, dance_t &op);

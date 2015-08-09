@@ -107,9 +107,16 @@ void dance_list::list_edit_button()
     }
     if (modified)
         edit_list_dialog->update_dancelist();
+
+    edit_list_dialog->set_modified(false);
     edit_list_dialog->show();
     edit_list_dialog->raise();
     edit_list_dialog->activateWindow();
+    if (edit_list_dialog->get_modified())
+    {
+        modified = true;
+        emit modified_list();
+    }
 }
 
 void dance_list::list_new_button()
