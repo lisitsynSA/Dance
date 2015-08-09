@@ -10,6 +10,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     showTime = true;
 
     dancelist = init_dancelist;
+    add_dance_dialog = 0;
 
     model = new QStringListModel(this);
     //model->setStringList(current_dance);
@@ -35,6 +36,21 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     mainLayout->addWidget(listView);
     mainLayout->addLayout(rightLayout);
     setLayout(mainLayout);
+}
+
+void dance_class::add_in_lesson()
+{
+    qDebug() << "ADD";
+    if (!add_dance_dialog)
+    {
+        add_dance_dialog = new add_dance_d(this);
+        connect(add_dance_dialog, SIGNAL(accepted()),
+                this, SIGNAL(modified_class()));
+    }
+
+    add_dance_dialog->show();
+    add_dance_dialog->raise();
+    add_dance_dialog->activateWindow();
 }
 
 bool dance_class::read_mainFile(const QString &fileName)

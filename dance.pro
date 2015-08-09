@@ -4,7 +4,8 @@ HEADERS += \
     dance_t.h \
     dance_list.h \
     new_dance_d.h \
-    edit_list_d.h
+    edit_list_d.h \
+    add_dance_d.h
 
 SOURCES += \
     main_window.cpp \
@@ -13,11 +14,13 @@ SOURCES += \
     dance_t.cpp \
     dance_list.cpp \
     new_dance_d.cpp \
-    edit_list_d.cpp
+    edit_list_d.cpp \
+    add_dance_d.cpp
 
 FORMS += \
     new_dance_d.ui \
-    edit_list_d.ui
+    edit_list_d.ui \
+    add_dance_d.ui
 
 RESOURCES += \
     dance_class.qrc

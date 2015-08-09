@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QDate>
 #include <QTextCharFormat>
-//#include <add_dialog.h>
+#include <add_dance_d.h>
 //#include <del_dialog.h>
 
 class QCalendarWidget;
@@ -36,7 +36,7 @@ signals:
     void modified_date();
 
 public slots:
-    void add_in_lesson(){ qDebug() << "ADD"; }
+    void add_in_lesson();
     void del_in_lesson(){ qDebug() << "DEL"; }
     void load_to_buffer(){ qDebug() << "LOAD"; }
     void set_showSpeed(bool value){  qDebug() << "SHOW SPEED"; showSpeed = value; }
@@ -58,6 +58,7 @@ private:
     QDate current_date;
 
     dance_list *dancelist;
+    add_dance_d *add_dance_dialog;
 
     bool showSpeed;
     bool showRepeating;
