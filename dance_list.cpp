@@ -75,7 +75,7 @@ bool dance_list::writeFile()
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     for (int i = 0; i < dance_vector.count(); i++)
-        out << dance_vector[i];
+        out << *(dance_vector[i]);
 
     QApplication::restoreOverrideCursor();
     return true;
@@ -104,20 +104,17 @@ void dance_list::list_edit_button()
     if (!edit_list_dialog)
     {
         edit_list_dialog = new edit_list_d(&dance_vector, this);
+        connect(edit_list_dialog, SIGNAL(save_changes()),
+                this, SLOT(modified_list_slot()));
     }
     if (modified)
         edit_list_dialog->update_dancelist();
 
-    edit_list_dialog->set_modified(false);
     edit_list_dialog->show();
     edit_list_dialog->raise();
     edit_list_dialog->activateWindow();
-    if (edit_list_dialog->get_modified())
-    {
-        modified = true;
-        emit modified_list();
-    }
 }
+
 
 void dance_list::list_new_button()
 {

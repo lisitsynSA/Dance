@@ -6,6 +6,7 @@ edit_list_d::edit_list_d(QVector<dance_t*>* init_dance_vector, QWidget* parent):
     ui(new Ui::edit_list_d),
     dance_vector(init_dance_vector)
 {
+    modified = false;
     ui->setupUi(this);
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(load_dance(int)));
@@ -50,11 +51,13 @@ void edit_list_d::load_dance(int dance)
 
 void edit_list_d::save_dance()
 {
-    int dance = ui->comboBox->currentIndex();
     if (modified)
     {
+        int dance = ui->comboBox->currentIndex();
         (*dance_vector)[dance]->set_music(ui->textEdit_music->toPlainText());
         (*dance_vector)[dance]->set_description(ui->textEdit_full->toPlainText());
         (*dance_vector)[dance]->set_short_description(ui->textEdit_short->toPlainText());
+        emit save_changes();
+        modified = false;
     }
 }

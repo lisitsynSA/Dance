@@ -24,7 +24,7 @@ MainWindow::MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (okToContinue()) {
+    if (okToContinue() && okToContinue_list()) {
         writeSettings();
         event->accept();
     } else {
@@ -325,7 +325,8 @@ void MainWindow::writeSettings()
 
 bool MainWindow::okToContinue()
 {
-    if (isWindowModified()) {
+    if (isWindowModified())
+    {
         int r = QMessageBox::warning(this, tr("Dance class"),
                         tr("The document has been modified.\n"
                            "Do you want to save your changes?"),
@@ -333,6 +334,24 @@ bool MainWindow::okToContinue()
                         | QMessageBox::Cancel);
         if (r == QMessageBox::Yes) {
             return save();
+        } else if (r == QMessageBox::Cancel) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MainWindow::okToContinue_list()
+{
+    if (dancelist->is_modified())
+    {
+        int r = QMessageBox::warning(this, tr("Dance class"),
+                        tr("The list of the dances has been modified.\n"
+                           "Do you want to save your changes?"),
+                        QMessageBox::Yes | QMessageBox::No
+                        | QMessageBox::Cancel);
+        if (r == QMessageBox::Yes) {
+            return dancelist->writeFile();
         } else if (r == QMessageBox::Cancel) {
             return false;
         }
@@ -408,4 +427,3 @@ QString MainWindow::strippedName(const QString &fullFileName)
 {
     return QFileInfo(fullFileName).fileName();
 }
-

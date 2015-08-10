@@ -37,6 +37,7 @@ private:
     void readSettings();
     void writeSettings();
     bool okToContinue();
+    bool okToContinue_list();
     bool loadFile(const QString &fileName);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
