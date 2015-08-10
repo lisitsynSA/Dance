@@ -121,7 +121,7 @@ void dance_list::list_new_button()
     qDebug() << "NEW";
     if (!new_dance_dialog)
     {
-        new_dance_dialog = new new_dance_d(this);
+        new_dance_dialog = new new_dance_d(&dance_vector, this);
         connect(new_dance_dialog, SIGNAL(send_dance(dance_t*)),
                 this, SLOT(list_add(dance_t*)));
         connect(new_dance_dialog, SIGNAL(accepted()),
