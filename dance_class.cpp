@@ -43,7 +43,7 @@ void dance_class::add_in_lesson()
     qDebug() << "ADD";
     if (!add_dance_dialog)
     {
-        add_dance_dialog = new add_dance_d(this);
+        add_dance_dialog = new add_dance_d(dancelist->get_dance_vector(), this);
         connect(add_dance_dialog, SIGNAL(accepted()),
                 this, SIGNAL(modified_class()));
     }

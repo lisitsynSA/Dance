@@ -18,6 +18,7 @@ public:
     ~dance_list();
 
     bool writeFile();
+    QVector<dance_t*>* get_dance_vector() {return &dance_vector;}
     QString get_name_dance(int place) const;
     dance_t* get_dance(int place) const;
     dance_t* get_dance(QString name) const;
