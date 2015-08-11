@@ -11,6 +11,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
 
     dancelist = init_dancelist;
     add_dance_dialog = 0;
+    current_date_modified = false;
 
     model = new QStringListModel(this);
     //model->setStringList(current_dance);
@@ -38,12 +39,14 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     setLayout(mainLayout);
 }
 
-void dance_class::add_in_lesson()
+void dance_class::add_button()
 {
     qDebug() << "ADD";
     if (!add_dance_dialog)
     {
         add_dance_dialog = new add_dance_d(dancelist->get_dance_vector(), this);
+        connect(add_dance_dialog, SIGNAL(add_dance(QString)),
+                this, SLOT(add_dance(QString)));
         connect(add_dance_dialog, SIGNAL(accepted()),
                 this, SIGNAL(modified_class()));
     }
@@ -51,6 +54,12 @@ void dance_class::add_in_lesson()
     add_dance_dialog->show();
     add_dance_dialog->raise();
     add_dance_dialog->activateWindow();
+}
+
+void dance_class::add_dance(QString dance)
+{
+    current_class.push_back(dance);
+    current_date_modified = true;
 }
 
 bool dance_class::read_mainFile(const QString &fileName)
@@ -77,11 +86,13 @@ bool dance_class::read_mainFile(const QString &fileName)
 
     QDate* temp = NULL;
     QApplication::setOverrideCursor(Qt::WaitCursor);
+    all_classes.empty();//TODO: full clear
     while (!in.atEnd()) {
         temp = new QDate;
         in >> *temp;
         all_classes.push_back(temp);
     }
+    class_path = QFileInfo(fileName).absolutePath();
     QApplication::restoreOverrideCursor();
     return true;
 }
@@ -102,7 +113,7 @@ bool dance_class::write_mainFile(const QString &fileName)
     out.setVersion(QDataStream::Qt_4_8);
 
     out << quint32(MagicNumber);
-    QList<QDate*>::const_iterator it = all_classes.begin();
+    QVector<QDate*>::const_iterator it = all_classes.begin();
     QApplication::setOverrideCursor(Qt::WaitCursor);
     while (it != all_classes.end())
     {
@@ -174,8 +185,23 @@ bool dance_class::writeFile(const QString &fileName)
 
 void dance_class::changed_date(QDate date)
 {
+    if (current_date_modified)
+    {
+        writeFile(class_path + '/' + date.toString("dd_MM_yyyy"));
+        calendar->setDateTextFormat(current_date, underline);
+    }
     current_date = date;
-    //calendar->setDateTextFormat(current_date, underline);
+    current_date_modified = false;
+    if (find_date(date))
+        readFile(class_path + '/' + date.toString("dd_MM_yyyy"));
     qDebug() << "CHANGED DATE" << date;
     emit modified_date();
+}
+
+bool dance_class::find_date(QDate date)//TODO: Optimize search
+{
+    for (int i = 0; i < all_classes.size(); i++)
+        if (*(all_classes[i]) == date)
+            return true;
+    return false;
 }

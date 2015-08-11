@@ -148,7 +148,7 @@ void MainWindow::createActions()
     loadAction->setStatusTip(tr("Copy current dance class "
                                "to the buffer"));
     connect(loadAction, SIGNAL(triggered()),
-            danceclass, SLOT(load_to_buffer()));
+            danceclass, SLOT(load_button()));
 
     addAction = new QAction(tr("&Add"), this);
     addAction->setIcon(QIcon(":/images/plus.png"));
@@ -156,7 +156,7 @@ void MainWindow::createActions()
     addAction->setStatusTip(tr("Add the new dance "
                                "to the current lesson"));
     connect(addAction, SIGNAL(triggered()),
-            danceclass, SLOT(add_in_lesson()));
+            danceclass, SLOT(add_button()));
 
     deleteAction = new QAction(tr("&Delete"), this);
     deleteAction->setIcon(QIcon(":/images/minus.png"));
@@ -164,7 +164,7 @@ void MainWindow::createActions()
     deleteAction->setStatusTip(tr("Delete the current selection's "
                                   "contents"));
     connect(deleteAction, SIGNAL(triggered()),
-            danceclass, SLOT(del_in_lesson()));
+            danceclass, SLOT(del_button()));
 
     listEditAction = new QAction(tr("&Edit"), this);
     listEditAction->setIcon(QIcon(":/images/edit.png"));

@@ -42,7 +42,7 @@ void new_dance_d::create_dance()
     }
 }
 
-bool new_dance_d::find_dance(QString name)
+bool new_dance_d::find_dance(QString name)//TODO:optimize search
 {
     for (int i = 0; i < dance_vector->count(); i++)
         if (name == (*dance_vector)[i]->get_name())
