@@ -22,7 +22,7 @@ class dance_class : public QWidget
 public:
     explicit dance_class(dance_list *init_dancelist, QWidget *parent = 0);
 
-    void clear(){}//delete: all_classes, current_class, current_date
+    void clear();
     bool read_mainFile(const QString &fileName);
     bool write_mainFile(const QString &fileName);
     bool readFile(const QString &fileName);
@@ -61,6 +61,8 @@ private:
     QString class_path;
     QDate current_date;
     bool find_date(QDate date);
+    void add_date(QDate date);
+    void set_date_format(QVector<QDate*> dates, QTextCharFormat format);
     bool current_date_modified;
 
     dance_list *dancelist;

@@ -20,6 +20,7 @@ MainWindow::MainWindow()
 
     setWindowIcon(QIcon(":/images/icon.png"));
     setCurrentFile("");
+    loadFile("dc/test.dc", true);//TODO:delete repeating of recent files
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -359,7 +360,7 @@ bool MainWindow::okToContinue_list()
     return true;
 }
 
-bool MainWindow::loadFile(const QString &fileName)
+bool MainWindow::loadFile(const QString &fileName, bool first_load)
 {
     if (!danceclass->read_mainFile(fileName)) {
         statusBar()->showMessage(tr("Loading canceled"), 2000);
@@ -367,7 +368,8 @@ bool MainWindow::loadFile(const QString &fileName)
     }
 
     setCurrentFile(fileName);
-    statusBar()->showMessage(tr("File loaded"), 2000);
+    if (!first_load)
+        statusBar()->showMessage(tr("File loaded"), 2000);
     return true;
 }
 

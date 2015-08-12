@@ -14,11 +14,14 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     current_date_modified = false;
 
     model = new QStringListModel(this);
-    //model->setStringList(current_dance);
+    model->setStringList(current_class);
 
     listView = new QListView(this);
+    listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    listView->setDragDropMode(QAbstractItemView::InternalMove);
     listView->setModel(model);
-    listView->setEditTriggers(QAbstractItemView::DoubleClicked);
+
     calendar = new QCalendarWidget(this);
     calendar->setGridVisible(true);
     calendar->setFirstDayOfWeek(Qt::Monday);
@@ -29,6 +32,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     underline = standart;
     underline.setFontPointSize(15);
     underline.setForeground(Qt::magenta);
+
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
     rightLayout->addStretch();
@@ -60,6 +64,7 @@ void dance_class::add_dance(QString dance)
 {
     current_class.push_back(dance);
     current_date_modified = true;
+    model->setStringList(current_class);
 }
 
 bool dance_class::read_mainFile(const QString &fileName)
@@ -86,15 +91,29 @@ bool dance_class::read_mainFile(const QString &fileName)
 
     QDate* temp = NULL;
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    all_classes.empty();//TODO: full clear
+    clear();
     while (!in.atEnd()) {
         temp = new QDate;
         in >> *temp;
         all_classes.push_back(temp);
+
     }
+    set_date_format(all_classes, underline);
     class_path = QFileInfo(fileName).absolutePath();
     QApplication::restoreOverrideCursor();
     return true;
+}
+
+void dance_class::clear()//TODO: delete: all_classes, current_class, current_date
+{
+    set_date_format(all_classes, standart);
+    all_classes.clear();
+}
+
+void dance_class::set_date_format(QVector<QDate*> dates, QTextCharFormat format)
+{
+    for (int i = 0; i < dates.size(); i++)
+        calendar->setDateTextFormat(*(dates[i]), format);
 }
 
 bool dance_class::write_mainFile(const QString &fileName)
@@ -187,14 +206,16 @@ void dance_class::changed_date(QDate date)
 {
     if (current_date_modified)
     {
-        writeFile(class_path + '/' + date.toString("dd_MM_yyyy"));
-        calendar->setDateTextFormat(current_date, underline);
+        writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+        add_date(current_date);
     }
     current_date = date;
     current_date_modified = false;
+    current_class.clear();
     if (find_date(date))
         readFile(class_path + '/' + date.toString("dd_MM_yyyy"));
     qDebug() << "CHANGED DATE" << date;
+    model->setStringList(current_class);
     emit modified_date();
 }
 
@@ -204,4 +225,12 @@ bool dance_class::find_date(QDate date)//TODO: Optimize search
         if (*(all_classes[i]) == date)
             return true;
     return false;
+}
+
+void dance_class::add_date(QDate date)
+{
+    calendar->setDateTextFormat(date, underline);
+    QDate* temp = new QDate;
+    *temp = date;
+    all_classes.push_back(temp);
 }

@@ -38,7 +38,7 @@ private:
     void writeSettings();
     bool okToContinue();
     bool okToContinue_list();
-    bool loadFile(const QString &fileName);
+    bool loadFile(const QString &fileName, bool first_load = false);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
     void updateRecentFileActions();
