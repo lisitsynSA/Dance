@@ -19,7 +19,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     listView = new QListView(this);
     listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    listView->setDragDropMode(QAbstractItemView::InternalMove);
+    listView->setDragDropMode(QAbstractItemView::NoDragDrop);//TODO: implement QAbstractItemView::InternalMove
     listView->setModel(model);
 
     calendar = new QCalendarWidget(this);
