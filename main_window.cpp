@@ -25,7 +25,7 @@ MainWindow::MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (okToContinue() && okToContinue_list()) {
+    if (okToContinue()) {
         writeSettings();
         event->accept();
     } else {
@@ -325,24 +325,6 @@ void MainWindow::writeSettings()
 }
 
 bool MainWindow::okToContinue()
-{
-    if (isWindowModified())
-    {
-        int r = QMessageBox::warning(this, tr("Dance class"),
-                        tr("The document has been modified.\n"
-                           "Do you want to save your changes?"),
-                        QMessageBox::Yes | QMessageBox::No
-                        | QMessageBox::Cancel);
-        if (r == QMessageBox::Yes) {
-            return save();
-        } else if (r == QMessageBox::Cancel) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool MainWindow::okToContinue_list()
 {
     if (dancelist->is_modified())
     {
