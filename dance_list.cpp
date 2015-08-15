@@ -88,7 +88,8 @@ void dance_list::make_alphabetical_order()
 
 void dance_list::make_fast_find_order()
 {
-
+    for (int i = 0; i < dance_vector.count(); i++)
+        fast_find_order[(dance_vector[i])->get_name()] = dance_vector[i];
 }
 
 void dance_list::add_dance(dance_t* dance)

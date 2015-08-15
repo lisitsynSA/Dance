@@ -6,11 +6,12 @@
 #include <QDate>
 #include <QVector>
 #include <QTextCharFormat>
+#include <QTextBrowser>
+#include <QListView>
 #include <add_dance_d.h>
 //#include <del_dialog.h>
 
 class QCalendarWidget;
-class QListView;
 class QStringListModel;
 class dance_list;
 
@@ -43,13 +44,14 @@ public slots:
     void set_showSpeed(bool value){  qDebug() << "SHOW SPEED"; showSpeed = value; }
     void set_showRepeating(bool value){  qDebug() << "SHOW REPEATING"; showRepeating = value; }
     void set_showTime(bool value){  qDebug() << "SHOW TIME"; showTime = value; }
-
+    void set_music(QModelIndex index);
 private slots:
     void changed_date(QDate date);
     void add_dance(QString dance);
 private:
     enum { MagicNumber = 0x7FFF883};
     QCalendarWidget *calendar;
+    QTextBrowser * music;
     QTextCharFormat standart;
     QTextCharFormat underline;
 

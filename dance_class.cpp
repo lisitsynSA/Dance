@@ -21,6 +21,8 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     listView->setDragDropMode(QAbstractItemView::NoDragDrop);//TODO: implement QAbstractItemView::InternalMove
     listView->setModel(model);
+    connect(listView, SIGNAL(clicked(QModelIndex)),
+            this, SLOT(set_music(QModelIndex)));
 
     calendar = new QCalendarWidget(this);
     calendar->setGridVisible(true);
@@ -33,9 +35,12 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     underline.setFontPointSize(15);
     underline.setForeground(Qt::magenta);
 
+    music  = new QTextBrowser(this);
+
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
-    rightLayout->addStretch();
+    rightLayout->addWidget(new QLabel("Music:", this));
+    rightLayout->addWidget(music);
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addWidget(listView);
@@ -216,6 +221,7 @@ void dance_class::changed_date(QDate date)
         readFile(class_path + '/' + date.toString("dd_MM_yyyy"));
     qDebug() << "CHANGED DATE" << date;
     model->setStringList(current_class);
+    music->setText("");
     emit modified_date();
 }
 
@@ -233,4 +239,10 @@ void dance_class::add_date(QDate date)
     QDate* temp = new QDate;
     *temp = date;
     all_classes.push_back(temp);
+}
+
+void dance_class::set_music(QModelIndex index)
+{
+    qDebug() << "SET MUSIC:" << index.data();
+    music->setText((dancelist->get_dance(index.data().toString()))->get_music());
 }
