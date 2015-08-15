@@ -18,12 +18,12 @@ public:
                          QWidget *parent = 0);
     ~add_dance_d();
 
-    void update_dancelist();
 signals:
     void add_dance(QString);
 public slots:
     void load_dance(int dance);
     void save_dance();
+    void update_dancelist();
 private:
     Ui::add_dance_d *ui;
     QVector<dance_t*>* dance_vector;

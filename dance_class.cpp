@@ -58,6 +58,8 @@ void dance_class::add_button()
                 this, SLOT(add_dance(QString)));
         connect(add_dance_dialog, SIGNAL(accepted()),
                 this, SIGNAL(modified_class()));
+        connect(dancelist, SIGNAL(modified_list()),
+                add_dance_dialog, SLOT(update_dancelist()));
     }
 
     add_dance_dialog->show();
@@ -207,13 +209,16 @@ bool dance_class::writeFile(const QString &fileName)
     return true;
 }
 
+bool dance_class::save_current_date()
+{
+    add_date(current_date);
+    return writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+}
+
 void dance_class::changed_date(QDate date)
 {
     if (current_date_modified)
-    {
-        writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
-        add_date(current_date);
-    }
+        save_current_date();
     current_date = date;
     current_date_modified = false;
     current_class.clear();
@@ -235,10 +240,13 @@ bool dance_class::find_date(QDate date)//TODO: Optimize search
 
 void dance_class::add_date(QDate date)
 {
-    calendar->setDateTextFormat(date, underline);
-    QDate* temp = new QDate;
-    *temp = date;
-    all_classes.push_back(temp);
+    if (calendar->dateTextFormat(date) != underline)
+    {
+        calendar->setDateTextFormat(date, underline);
+        QDate* temp = new QDate;
+        *temp = date;
+        all_classes.push_back(temp);
+    }
 }
 
 void dance_class::set_music(QModelIndex index)

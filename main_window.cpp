@@ -20,7 +20,7 @@ MainWindow::MainWindow()
 
     setWindowIcon(QIcon(":/images/icon.png"));
     setCurrentFile("");
-    loadFile("dc/test.dc", true);//TODO:delete repeating of recent files
+    loadFile("dc/dances.dc", true);//TODO:delete repeating of recent files
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -326,6 +326,7 @@ void MainWindow::writeSettings()
 
 bool MainWindow::okToContinue()
 {
+    danceclass->save_current_date();
     if (dancelist->is_modified())
     {
         int r = QMessageBox::warning(this, tr("Dance class"),

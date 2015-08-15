@@ -32,6 +32,7 @@ public:
     bool get_showRepeating(){ return showRepeating; }
     bool get_showTime(){ return showTime; }
     QDate get_current_date(){ return current_date;}
+    bool save_current_date();
 
 signals:
     void modified_class();
