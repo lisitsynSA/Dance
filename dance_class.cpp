@@ -14,7 +14,6 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     current_date_modified = false;
 
     model = new QStringListModel(this);
-    model->setStringList(current_class);
 
     listView = new QListView(this);
     listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -74,6 +73,14 @@ void dance_class::add_dance(QString dance)
     model->setStringList(current_class);
 }
 
+void dance_class::del_button()
+{
+    qDebug() << "DEL";
+    current_class.removeAt(listView->currentIndex().row());
+    current_date_modified = true;
+    model->setStringList(current_class);
+}
+
 bool dance_class::read_mainFile(const QString &fileName)
 {
     qDebug() << "READ CLASS MAINFILE";
@@ -107,6 +114,7 @@ bool dance_class::read_mainFile(const QString &fileName)
     }
     set_date_format(all_classes, underline);
     class_path = QFileInfo(fileName).absolutePath();
+    changed_date(current_date);
     QApplication::restoreOverrideCursor();
     return true;
 }
@@ -211,12 +219,16 @@ bool dance_class::writeFile(const QString &fileName)
 
 bool dance_class::save_current_date()
 {
-    add_date(current_date);
-    return writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+    if (current_date_modified)
+    {
+        add_date(current_date);
+        return writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+    }
+    return true;
 }
 
 void dance_class::changed_date(QDate date)
-{
+{//TODO: check that list is empty
     if (current_date_modified)
         save_current_date();
     current_date = date;

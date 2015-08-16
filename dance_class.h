@@ -40,7 +40,7 @@ signals:
 
 public slots:
     void add_button();
-    void del_button(){ qDebug() << "DEL"; }
+    void del_button();
     void load_button(){ qDebug() << "LOAD TO BUFFER"; }
     void set_showSpeed(bool value){  qDebug() << "SHOW SPEED"; showSpeed = value; }
     void set_showRepeating(bool value){  qDebug() << "SHOW REPEATING"; showRepeating = value; }

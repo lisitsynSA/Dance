@@ -326,6 +326,7 @@ void MainWindow::writeSettings()
 
 bool MainWindow::okToContinue()
 {
+    save();
     danceclass->save_current_date();
     if (dancelist->is_modified())
     {
