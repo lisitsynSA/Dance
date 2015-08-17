@@ -81,6 +81,18 @@ void dance_class::del_button()
     model->setStringList(current_class);
 }
 
+void dance_class::load_button()
+{
+    qDebug() << "LOAD TO BUFFER";
+    QClipboard *clipboard = QApplication::clipboard();
+    QString buffer = current_date.toString("dd.MM.yy (dddd)") + ":\n";
+    QStringList::const_iterator it;
+    for (it = current_class.constBegin(); it != current_class.constEnd(); it++)
+        buffer = buffer + "\n" + (*it).toLocal8Bit().constData();
+    clipboard->setText(buffer);
+    emit status_bar(tr("Loaded to the clipboard"));
+}
+
 bool dance_class::read_mainFile(const QString &fileName)
 {
     qDebug() << "READ CLASS MAINFILE";

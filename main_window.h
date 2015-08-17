@@ -27,6 +27,7 @@ private slots:
     void openRecentFile();
     void updateStatusBar();
     void danceclassModified();
+    void msg_statusBar(const QString&);
 
 private:
     void createActions();

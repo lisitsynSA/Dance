@@ -37,11 +37,12 @@ public:
 signals:
     void modified_class();
     void modified_date();
+    void status_bar(QString);
 
 public slots:
     void add_button();
     void del_button();
-    void load_button(){ qDebug() << "LOAD TO BUFFER"; }
+    void load_button();
     void set_showSpeed(bool value){  qDebug() << "SHOW SPEED"; showSpeed = value; }
     void set_showRepeating(bool value){  qDebug() << "SHOW REPEATING"; showRepeating = value; }
     void set_showTime(bool value){  qDebug() << "SHOW TIME"; showTime = value; }

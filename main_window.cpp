@@ -8,6 +8,8 @@ MainWindow::MainWindow()
 {
     dancelist = new dance_list(this);
     danceclass = new dance_class(dancelist, this);
+    connect(danceclass, SIGNAL(status_bar(QString)),
+            this, SLOT(msg_statusBar(QString)));
     setCentralWidget(danceclass);
 
     createActions();
@@ -355,6 +357,11 @@ bool MainWindow::loadFile(const QString &fileName, bool first_load)
     if (!first_load)
         statusBar()->showMessage(tr("File loaded"), 2000);
     return true;
+}
+
+void MainWindow::msg_statusBar(const QString &msg)
+{
+    statusBar()->showMessage(msg, 2000);
 }
 
 bool MainWindow::saveFile(const QString &fileName)
