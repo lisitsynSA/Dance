@@ -28,6 +28,7 @@ public:
     bool write_mainFile(const QString &fileName);
     bool readFile(const QString &fileName);
     bool writeFile(const QString &fileName);
+    bool removeFile(const QString &fileName);
     bool get_showSpeed(){ return showSpeed; }
     bool get_showRepeating(){ return showRepeating; }
     bool get_showTime(){ return showTime; }
@@ -66,6 +67,7 @@ private:
     QDate current_date;
     bool find_date(QDate date);
     void add_date(QDate date);
+    void delete_date(QDate date);
     void set_date_format(QVector<QDate*> dates, QTextCharFormat format);
     bool current_date_modified;
 

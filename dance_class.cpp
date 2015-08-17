@@ -229,20 +229,23 @@ bool dance_class::writeFile(const QString &fileName)
     return true;
 }
 
-bool dance_class::save_current_date()
+bool dance_class::removeFile(const QString &fileName)
 {
-    if (current_date_modified)
-    {
-        add_date(current_date);
-        return writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+    qDebug() << "REMOVE CLASS FILE";
+    QFile file(fileName);
+    if (!file.remove()) {
+        QMessageBox::warning(this, tr("Dance class"),
+                             tr("Cannot remove file %1:\n%2.")
+                             .arg(file.fileName())
+                             .arg(file.errorString()));
+        return false;
     }
     return true;
 }
 
 void dance_class::changed_date(QDate date)
 {//TODO: check that list is empty
-    if (current_date_modified)
-        save_current_date();
+    save_current_date();
     current_date = date;
     current_date_modified = false;
     current_class.clear();
@@ -262,6 +265,22 @@ bool dance_class::find_date(QDate date)//TODO: Optimize search
     return false;
 }
 
+bool dance_class::save_current_date()
+{
+    if (current_date_modified)
+    {
+        if (current_class.empty())
+        {
+            delete_date(current_date);
+            return removeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+        } else {
+            add_date(current_date);
+            return writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+        }
+    }
+    return true;
+}
+
 void dance_class::add_date(QDate date)
 {
     if (calendar->dateTextFormat(date) != underline)
@@ -270,6 +289,17 @@ void dance_class::add_date(QDate date)
         QDate* temp = new QDate;
         *temp = date;
         all_classes.push_back(temp);
+    }
+}
+
+void dance_class::delete_date(QDate date)
+{
+    if (calendar->dateTextFormat(date) != standart)
+    {
+        calendar->setDateTextFormat(date, standart);
+        for (int i = 0; i < all_classes.size(); i++)
+            if (*(all_classes[i]) == date)
+                all_classes.remove(i);
     }
 }
 
