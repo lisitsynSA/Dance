@@ -15,10 +15,10 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
 
     model = new QStringListModel(this);
 
-    listView = new QListView(this);
+    listView = new listview_t(this);
     listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    listView->setDragDropMode(QAbstractItemView::NoDragDrop);//TODO: implement QAbstractItemView::InternalMove
+    listView->setDragDropMode(QAbstractItemView::InternalMove);
     listView->setModel(model);
     connect(listView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(set_music(QModelIndex)));
@@ -74,9 +74,14 @@ void dance_class::add_dance(QString dance)
 }
 
 void dance_class::del_button()
-{
-    qDebug() << "DEL";
-    current_class.removeAt(listView->currentIndex().row());
+{//TODO: deleting many dances
+    QList<int>* list = listView->get_selectedIndexes();
+    qDebug() << "DEL: " << *list;
+    QList<int>::const_iterator it;
+    for (it = list->constBegin(); it != list->constEnd(); it++)
+        current_class.removeAt(*it);
+    list->clear();
+    delete list;
     current_date_modified = true;
     model->setStringList(current_class);
 }
@@ -244,7 +249,7 @@ bool dance_class::removeFile(const QString &fileName)
 }
 
 void dance_class::changed_date(QDate date)
-{//TODO: check that list is empty
+{
     save_current_date();
     current_date = date;
     current_date_modified = false;
@@ -271,8 +276,11 @@ bool dance_class::save_current_date()
     {
         if (current_class.empty())
         {
+            bool result = false;
+            if (calendar->dateTextFormat(current_date) == underline)
+                result = removeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
             delete_date(current_date);
-            return removeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
+            return result;
         } else {
             add_date(current_date);
             return writeFile(class_path + '/' + current_date.toString("dd_MM_yyyy"));
@@ -294,7 +302,7 @@ void dance_class::add_date(QDate date)
 
 void dance_class::delete_date(QDate date)
 {
-    if (calendar->dateTextFormat(date) != standart)
+    if (calendar->dateTextFormat(date) == underline)
     {
         calendar->setDateTextFormat(date, standart);
         for (int i = 0; i < all_classes.size(); i++)

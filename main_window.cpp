@@ -328,8 +328,8 @@ void MainWindow::writeSettings()
 
 bool MainWindow::okToContinue()
 {
-    save();
     danceclass->save_current_date();
+    save();
     if (dancelist->is_modified())
     {
         int r = QMessageBox::warning(this, tr("Dance class"),

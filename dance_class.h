@@ -7,9 +7,8 @@
 #include <QVector>
 #include <QTextCharFormat>
 #include <QTextBrowser>
-#include <QListView>
-#include <add_dance_d.h>
-//#include <del_dialog.h>
+#include "listview_t.h"
+#include "add_dance_d.h"
 
 class QCalendarWidget;
 class QStringListModel;
@@ -58,7 +57,7 @@ private:
     QTextCharFormat standart;
     QTextCharFormat underline;
 
-    QListView *listView;
+    listview_t *listView;
     QStringListModel *model;
     QStringList current_class;
 
