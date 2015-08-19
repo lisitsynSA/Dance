@@ -50,6 +50,7 @@ public slots:
 private slots:
     void changed_date(QDate date);
     void add_dance(QString dance);
+    void drop_event(int row, QList<int>* list);
 private:
     enum { MagicNumber = 0x7FFF883};
     QCalendarWidget *calendar;

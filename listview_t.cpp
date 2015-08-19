@@ -28,12 +28,12 @@ QList<int>* listview_t::get_selectedIndexes()
 }
 
 int listview_t::get_row(QPoint pos)
-{
-    return 0;
+{//we should drop before row
+    int size = viewOptions().decorationSize.height();
+    return (pos.y() + size/2)/size;
 }
 
 void listview_t::dropEvent(QDropEvent * event)
 {
-    qDebug() << "dropEvent: \n pos: \t" << event->pos();
     emit drop_signal(get_row(event->pos()), get_selectedIndexes());
 }

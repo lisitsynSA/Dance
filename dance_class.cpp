@@ -22,6 +22,8 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     listView->setModel(model);
     connect(listView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(set_music(QModelIndex)));
+    connect(listView, SIGNAL(drop_signal(int,QList<int>*)),
+            this, SLOT(drop_event(int,QList<int>*)));
 
     calendar = new QCalendarWidget(this);
     calendar->setGridVisible(true);
@@ -96,6 +98,29 @@ void dance_class::load_button()
         buffer = buffer + "\n" + (*it).toLocal8Bit().constData();
     clipboard->setText(buffer);
     emit status_bar(tr("Loaded to the clipboard"));
+}
+
+void dance_class::drop_event(int row, QList<int>* list)
+{
+    qDebug() << "DROP EVENT: " << row << *list;
+    QStringList temp;
+    QList<int>::const_iterator it;
+    for (it = list->constBegin(); it != list->constEnd(); it++)
+    {
+        temp.push_front(current_class[*it]);
+        current_class.removeAt(*it);
+        if (*it < row)
+            row--;
+    }
+
+    QStringList::const_iterator string_it;
+    for (string_it = temp.constBegin();
+         string_it != temp.constEnd();string_it++)
+        current_class.insert(row, (*string_it));
+    list->clear();
+    delete list;
+    current_date_modified = true;
+    model->setStringList(current_class);
 }
 
 bool dance_class::read_mainFile(const QString &fileName)
