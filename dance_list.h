@@ -1,12 +1,12 @@
 #ifndef DANCE_LIST_H
 #define DANCE_LIST_H
 
-#include <QWidget>
 #include <QDebug>
 #include "new_dance_d.h"
 #include "edit_list_d.h"
 //#include <find_dialog.h>
 
+class QWidget;
 class dance_t;
 
 class dance_list : public QWidget

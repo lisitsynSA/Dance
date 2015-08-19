@@ -1,19 +1,18 @@
 #ifndef DANCE_CLASS_H
 #define DANCE_CLASS_H
 
-#include <QWidget>
 #include <QDebug>
 #include <QDate>
 #include <QVector>
 #include <QTextCharFormat>
-#include <QTextBrowser>
 #include "listview_t.h"
 #include "add_dance_d.h"
 
+class QWidget;
+class QTextBrowser;
 class QCalendarWidget;
 class QStringListModel;
 class dance_list;
-
 
 class dance_class : public QWidget
 {

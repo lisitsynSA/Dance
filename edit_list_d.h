@@ -1,8 +1,8 @@
 #ifndef EDIT_LIST_D_H
 #define EDIT_LIST_D_H
 
-#include <QDialog>
 #include <QDebug>
+#include <QDialog>
 #include <QVector>
 #include "dance_t.h"
 

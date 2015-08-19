@@ -76,7 +76,7 @@ void dance_class::add_dance(QString dance)
 }
 
 void dance_class::del_button()
-{//TODO: deleting many dances
+{
     QList<int>* list = listView->get_selectedIndexes();
     qDebug() << "DEL: " << *list;
     QList<int>::const_iterator it;
