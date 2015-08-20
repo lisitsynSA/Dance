@@ -6,7 +6,8 @@ HEADERS += \
     new_dance_d.h \
     edit_list_d.h \
     add_dance_d.h \
-    listview_t.h
+    listview_t.h \
+    find_d.h
 
 SOURCES += \
     main_window.cpp \
@@ -17,12 +18,14 @@ SOURCES += \
     new_dance_d.cpp \
     edit_list_d.cpp \
     add_dance_d.cpp \
-    listview_t.cpp
+    listview_t.cpp \
+    find_d.cpp
 
 FORMS += \
     new_dance_d.ui \
     edit_list_d.ui \
-    add_dance_d.ui
+    add_dance_d.ui \
+    find_d.ui
 
 RESOURCES += \
     dance_class.qrc

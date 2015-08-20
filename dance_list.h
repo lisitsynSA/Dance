@@ -4,7 +4,7 @@
 #include <QDebug>
 #include "new_dance_d.h"
 #include "edit_list_d.h"
-//#include <find_dialog.h>
+#include "find_d.h"
 
 class QWidget;
 class dance_t;
@@ -30,10 +30,10 @@ signals:
 
 public slots:
     void list_edit_button();
-    void list_find_button(){ qDebug() << "FIND"; }
+    void list_find_button();
     void list_new_button();
     void list_add(dance_t * dance) {add_dance(dance);
-                                    qDebug() << "New dance";}
+                                    qDebug() << "NEW DANCE";}
     void modified_list_slot();
 private:
     enum { MagicNumber = 0x7FFC883};
@@ -43,6 +43,7 @@ private:
 
     new_dance_d* new_dance_dialog;
     edit_list_d* edit_list_dialog;
+    find_d* find_dialog;
     void add_dance(dance_t* dance);
     bool readFile();
     void make_alphabetical_order();
