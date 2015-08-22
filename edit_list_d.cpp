@@ -6,19 +6,19 @@ edit_list_d::edit_list_d(QVector<dance_t*>* init_dance_vector, QWidget* parent):
     ui(new Ui::edit_list_d),
     dance_vector(init_dance_vector)
 {
-    modified = false;
     ui->setupUi(this);
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(load_dance(int)));
-    connect(this, SIGNAL(accepted()),
-            this, SLOT(save_dance()));
     connect(ui->textEdit_full, SIGNAL(textChanged()),
-            this, SLOT(list_changed()));
+            this, SLOT(check_changes()));
     connect(ui->textEdit_short, SIGNAL(textChanged()),
-            this, SLOT(list_changed()));
+            this, SLOT(check_changes()));
     connect(ui->textEdit_music, SIGNAL(textChanged()),
-            this, SLOT(list_changed()));
+            this, SLOT(check_changes()));
+    connect(ui->saveButton, SIGNAL(clicked()),
+            this, SLOT(save_dance()));
     update_dancelist();
+    ui->saveButton->setEnabled(false);
     load_dance(0);
 }
 
@@ -43,7 +43,6 @@ void edit_list_d::load_dance(int dance)
     if ((0 <= dance) && (dance < dance_vector->size()))
     {
         qDebug() << "LOAD DANCE FOR EDITTING: " << dance;
-
         ui->textEdit_short->setText((*dance_vector)[dance]->get_short_description());
         ui->textEdit_full->setText((*dance_vector)[dance]->get_description());
         ui->textEdit_music->setText((*dance_vector)[dance]->get_music());
@@ -52,13 +51,21 @@ void edit_list_d::load_dance(int dance)
 
 void edit_list_d::save_dance()
 {
-    if (modified)
-    {
-        int dance = ui->comboBox->currentIndex();
-        (*dance_vector)[dance]->set_music(ui->textEdit_music->toPlainText());
-        (*dance_vector)[dance]->set_description(ui->textEdit_full->toPlainText());
-        (*dance_vector)[dance]->set_short_description(ui->textEdit_short->toPlainText());
-        emit save_changes();
-        modified = false;
-    }
+    int dance = ui->comboBox->currentIndex();
+    (*dance_vector)[dance]->set_music(ui->textEdit_music->toPlainText());
+    (*dance_vector)[dance]->set_description(ui->textEdit_full->toPlainText());
+    (*dance_vector)[dance]->set_short_description(ui->textEdit_short->toPlainText());
+    ui->saveButton->setEnabled(false);
+    emit save_changes();
+}
+
+void edit_list_d::check_changes()
+{
+    int dance = ui->comboBox->currentIndex();
+    if ((*dance_vector)[dance]->get_short_description() == ui->textEdit_short->toPlainText() &&
+        (*dance_vector)[dance]->get_description() == ui->textEdit_full->toPlainText() &&
+        (*dance_vector)[dance]->get_music() == ui->textEdit_music->toPlainText())
+        ui->saveButton->setEnabled(false);
+    else
+        ui->saveButton->setEnabled(true);
 }
