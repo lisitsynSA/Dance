@@ -10,6 +10,8 @@ MainWindow::MainWindow()
     danceclass = new dance_class(dancelist, this);
     connect(danceclass, SIGNAL(status_bar(QString)),
             this, SLOT(msg_statusBar(QString)));
+    connect(dancelist, SIGNAL(add_dance_to_lesson(QString)),
+            danceclass, SLOT(add_dance(QString)));
     setCentralWidget(danceclass);
 
     createActions();

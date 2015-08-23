@@ -21,11 +21,15 @@ public:
 
     void update_dancelist();
 signals:
+    void add_dance(QString);
     void save_changes();
+    void new_dance();
 public slots:
-    void load_dance(int dance);
-    void save_dance();
+    void add_dance_slot();
     void check_changes();
+    void load_dance(int dance);
+    void new_button();
+    void save_dance();
 private:
     Ui::edit_list_d *ui;
     QVector<dance_t*>* dance_vector;

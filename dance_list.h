@@ -27,6 +27,7 @@ public:
 
 signals:
     void modified_list();
+    void add_dance_to_lesson(QString);
 
 public slots:
     void list_edit_button();

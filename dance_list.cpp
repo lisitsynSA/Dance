@@ -108,6 +108,10 @@ void dance_list::list_edit_button()
         edit_list_dialog = new edit_list_d(&dance_vector, this);
         connect(edit_list_dialog, SIGNAL(save_changes()),
                 this, SLOT(modified_list_slot()));
+        connect(edit_list_dialog, SIGNAL(add_dance(QString)),
+                this, SIGNAL(add_dance_to_lesson(QString)));
+        connect(edit_list_dialog, SIGNAL(new_dance()),
+                this, SLOT(list_new_button()));
     }
     if (modified)
         edit_list_dialog->update_dancelist();
