@@ -9,7 +9,6 @@ dance_list::dance_list(QWidget *parent) :
         writeFile();
     new_dance_dialog = 0;
     edit_list_dialog = 0;
-    find_dialog = 0;
     modified = false;
 }
 
@@ -119,18 +118,6 @@ void dance_list::list_edit_button()
     edit_list_dialog->show();
     edit_list_dialog->raise();
     edit_list_dialog->activateWindow();
-}
-
-void dance_list::list_find_button()
-{
-    qDebug() << "FIND";
-    if (!find_dialog)
-    {
-        find_dialog = new find_d(this);
-    }
-    find_dialog->show();
-    find_dialog->raise();
-    find_dialog->activateWindow();
 }
 
 void dance_list::list_new_button()

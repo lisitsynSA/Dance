@@ -37,14 +37,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-void MainWindow::newFile()
-{
-    if (okToContinue()) {
-        danceclass->clear();
-        setCurrentFile("");
-    }
-}
-
 void MainWindow::open()
 {
     if (okToContinue()) {
@@ -56,26 +48,6 @@ void MainWindow::open()
     }
 }
 
-bool MainWindow::save()
-{
-    if (curFile.isEmpty()) {
-        return saveAs();
-    } else {
-        return saveFile(curFile);
-    }
-}
-
-bool MainWindow::saveAs()
-{
-    QString fileName = QFileDialog::getSaveFileName(this,
-                               tr("Save Dance class"), ".",
-                               tr("Dance class files (*.dc)"));
-    if (fileName.isEmpty())
-        return false;
-
-    return saveFile(fileName);
-}
-
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Dance Class"),
@@ -85,62 +57,13 @@ void MainWindow::about()
                "helps to plan and track training."));
 }
 
-void MainWindow::openRecentFile()
-{
-    if (okToContinue()) {
-        QAction *action = qobject_cast<QAction *>(sender());
-        if (action)
-            loadFile(action->data().toString());
-    }
-}
-
 void MainWindow::updateStatusBar()
 {
     dateLabel->setText(danceclass->get_current_date().toString("dd.MM.yy (ddd)"));
 }
 
-void MainWindow::danceclassModified()
-{
-    setWindowModified(true);
-    updateStatusBar();
-}
-
 void MainWindow::createActions()
 {
-    newAction = new QAction(tr("&New"), this);
-    newAction->setIcon(QIcon(":/images/new.png"));
-    newAction->setShortcut(QKeySequence::New);
-    newAction->setStatusTip(tr("Create a new spreadsheet file"));
-    connect(newAction, SIGNAL(triggered()),
-            this, SLOT(newFile()));
-
-    openAction = new QAction(tr("&Open..."), this);
-    openAction->setIcon(QIcon(":/images/open.png"));
-    openAction->setShortcut(QKeySequence::Open);
-    openAction->setStatusTip(tr("Open an existing spreadsheet file"));
-    connect(openAction, SIGNAL(triggered()),
-            this, SLOT(open()));
-
-    saveAction = new QAction(tr("&Save"), this);
-    saveAction->setIcon(QIcon(":/images/save.png"));
-    saveAction->setShortcut(QKeySequence::Save);
-    saveAction->setStatusTip(tr("Save the spreadsheet to disk"));
-    connect(saveAction, SIGNAL(triggered()),
-            this, SLOT(save()));
-
-    saveAsAction = new QAction(tr("Save &As..."), this);
-    saveAsAction->setStatusTip(tr("Save the spreadsheet under a new "
-                                  "name"));
-    connect(saveAsAction, SIGNAL(triggered()),
-            this, SLOT(saveAs()));
-
-    for (int i = 0; i < MaxRecentFiles; ++i) {
-        recentFileActions[i] = new QAction(this);
-        recentFileActions[i]->setVisible(false);
-        connect(recentFileActions[i], SIGNAL(triggered()),
-                this, SLOT(openRecentFile()));
-    }
-
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcut(tr("Ctrl+Q"));
     exitAction->setStatusTip(tr("Exit the application"));
@@ -161,7 +84,7 @@ void MainWindow::createActions()
     addAction->setStatusTip(tr("Add the new dance "
                                "to the current lesson"));
     connect(addAction, SIGNAL(triggered()),
-            danceclass, SLOT(add_button()));
+            dancelist, SLOT(list_edit_button()));
 
     deleteAction = new QAction(tr("&Delete"), this);
     deleteAction->setIcon(QIcon(":/images/minus.png"));
@@ -170,19 +93,6 @@ void MainWindow::createActions()
                                   "contents"));
     connect(deleteAction, SIGNAL(triggered()),
             danceclass, SLOT(del_button()));
-
-    listEditAction = new QAction(tr("&Edit"), this);
-    listEditAction->setIcon(QIcon(":/images/edit.png"));
-    listEditAction->setStatusTip(tr("Edit the dictionary of the dance"));
-    connect(listEditAction, SIGNAL(triggered()),
-            dancelist, SLOT(list_edit_button()));
-
-    listFindAction = new QAction(tr("&Find"), this);
-    listFindAction->setIcon(QIcon(":/images/find.png"));
-    listFindAction->setShortcut(QKeySequence::Find);
-    listFindAction->setStatusTip(tr("Find a dance in the dictionary"));
-    connect(listFindAction, SIGNAL(triggered()),
-            dancelist, SLOT(list_find_button()));
 
     listNewAction = new QAction(tr("&New"), this);
     listNewAction->setIcon(QIcon(":/images/new_dance.png"));
@@ -225,26 +135,12 @@ void MainWindow::createActions()
 void MainWindow::createMenus()
 {
     dance_classMenu = menuBar()->addMenu(tr("Dance &class"));
-    dance_classMenu->addAction(newAction);
-    dance_classMenu->addAction(openAction);
-    dance_classMenu->addAction(saveAction);
-    dance_classMenu->addAction(saveAsAction);
-    separatorAction = dance_classMenu->addSeparator();
-    for (int i = 0; i < MaxRecentFiles; ++i)
-        dance_classMenu->addAction(recentFileActions[i]);
+    dance_classMenu->addAction(loadAction);
+    dance_classMenu->addAction(addAction);
+    dance_classMenu->addAction(deleteAction);
+    dance_classMenu->addAction(listNewAction);
     dance_classMenu->addSeparator();
     dance_classMenu->addAction(exitAction);
-
-    editMenu = menuBar()->addMenu(tr("&Edit"));
-    editMenu->addAction(loadAction);
-    editMenu->addAction(addAction);
-    editMenu->addAction(deleteAction);
-
-    edit_listSubMenu = editMenu->addMenu(tr("&Dictionary of dance"));
-    edit_listSubMenu->addAction(listEditAction);
-    edit_listSubMenu->addAction(listFindAction);
-    edit_listSubMenu->addAction(listNewAction);
-
 
     optionsMenu = menuBar()->addMenu(tr("&Options"));
     optionsMenu->addAction(showSpeedAction);
@@ -268,17 +164,10 @@ void MainWindow::createContextMenu()
 
 void MainWindow::createToolBars()
 {
-    fileToolBar = addToolBar(tr("&File"));
-    fileToolBar->addAction(openAction);
-    fileToolBar->addAction(saveAction);
-
     editToolBar = addToolBar(tr("&Edit"));
     editToolBar->addAction(loadAction);
     editToolBar->addAction(addAction);
     editToolBar->addAction(deleteAction);
-    editToolBar->addSeparator();
-    editToolBar->addAction(listEditAction);
-    editToolBar->addAction(listFindAction);
     editToolBar->addAction(listNewAction);
 }
 
@@ -289,9 +178,6 @@ void MainWindow::createStatusBar()
     dateLabel->setMinimumSize(dateLabel->sizeHint());
 
     statusBar()->addWidget(dateLabel);
-
-    connect(danceclass, SIGNAL(modified_class()),
-            this, SLOT(danceclassModified()));
     connect(danceclass, SIGNAL(modified_date()),
             this, SLOT(updateStatusBar()));
 
@@ -303,9 +189,6 @@ void MainWindow::readSettings()
     QSettings settings("LiSA", "Dance class");
 
     restoreGeometry(settings.value("geometry").toByteArray());
-
-    recentFiles = settings.value("recentFiles").toStringList();
-    updateRecentFileActions();
 
     bool showSpeed = settings.value("showSpeed", true).toBool();
     showSpeedAction->setChecked(showSpeed);
@@ -322,7 +205,6 @@ void MainWindow::writeSettings()
     QSettings settings("LiSA", "Dance class");
 
     settings.setValue("geometry", saveGeometry());
-    settings.setValue("recentFiles", recentFiles);
     settings.setValue("showSpeed", showSpeedAction->isChecked());
     settings.setValue("showRepeating", showRepeatingAction->isChecked());
     settings.setValue("showTime", showTimeAction->isChecked());
@@ -331,7 +213,7 @@ void MainWindow::writeSettings()
 bool MainWindow::okToContinue()
 {
     danceclass->save_current_date();
-    save();
+    saveFile(curFile);
     if (dancelist->is_modified())
     {
         int r = QMessageBox::warning(this, tr("Dance class"),
@@ -384,38 +266,11 @@ void MainWindow::setCurrentFile(const QString &fileName)
     setWindowModified(false);
 
     QString shownName = tr("Untitled");
-    if (!curFile.isEmpty()) {
+    if (!curFile.isEmpty())
         shownName = strippedName(curFile);
-        recentFiles.removeAll(curFile);
-        recentFiles.prepend(curFile);
-        updateRecentFileActions();
-    }
 
     setWindowTitle(tr("%1[*] - %2").arg(shownName)
                                    .arg(tr("Dance class")));
-}
-
-void MainWindow::updateRecentFileActions()
-{
-    QMutableStringListIterator i(recentFiles);
-    while (i.hasNext()) {
-        if (!QFile::exists(i.next()))
-            i.remove();
-    }
-
-    for (int j = 0; j < MaxRecentFiles; ++j) {
-        if (j < recentFiles.count()) {
-            QString text = tr("&%1 %2")
-                           .arg(j + 1)
-                           .arg(strippedName(recentFiles[j]));
-            recentFileActions[j]->setText(text);
-            recentFileActions[j]->setData(recentFiles[j]);
-            recentFileActions[j]->setVisible(true);
-        } else {
-            recentFileActions[j]->setVisible(false);
-        }
-    }
-    separatorAction->setVisible(!recentFiles.isEmpty());
 }
 
 QString MainWindow::strippedName(const QString &fullFileName)

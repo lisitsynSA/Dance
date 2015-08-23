@@ -10,7 +10,6 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     showTime = true;
 
     dancelist = init_dancelist;
-    add_dance_dialog = 0;
     current_date_modified = false;
 
     model = new QStringListModel(this);
@@ -47,25 +46,6 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     mainLayout->addWidget(listView);
     mainLayout->addLayout(rightLayout);
     setLayout(mainLayout);
-}
-
-void dance_class::add_button()
-{
-    qDebug() << "ADD";
-    if (!add_dance_dialog)
-    {
-        add_dance_dialog = new add_dance_d(dancelist->get_dance_vector(), this);
-        connect(add_dance_dialog, SIGNAL(add_dance(QString)),
-                this, SLOT(add_dance(QString)));
-        connect(add_dance_dialog, SIGNAL(accepted()),
-                this, SIGNAL(modified_class()));
-        connect(dancelist, SIGNAL(modified_list()),
-                add_dance_dialog, SLOT(update_dancelist()));
-    }
-
-    add_dance_dialog->show();
-    add_dance_dialog->raise();
-    add_dance_dialog->activateWindow();
 }
 
 void dance_class::add_dance(QString dance)

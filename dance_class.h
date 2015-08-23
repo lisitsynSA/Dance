@@ -6,7 +6,6 @@
 #include <QVector>
 #include <QTextCharFormat>
 #include "listview_t.h"
-#include "add_dance_d.h"
 
 class QWidget;
 class QTextBrowser;
@@ -34,12 +33,10 @@ public:
     bool save_current_date();
 
 signals:
-    void modified_class();
     void modified_date();
     void status_bar(QString);
 
 public slots:
-    void add_button();
     void del_button();
     void load_button();
     void set_showSpeed(bool value){  qDebug() << "SHOW SPEED"; showSpeed = value; }
@@ -69,9 +66,7 @@ private:
     void delete_date(QDate date);
     void set_date_format(QVector<QDate*> dates, QTextCharFormat format);
     bool current_date_modified;
-
     dance_list *dancelist;
-    add_dance_d *add_dance_dialog;
 
     bool showSpeed;
     bool showRepeating;
