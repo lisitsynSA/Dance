@@ -21,6 +21,8 @@ public:
     QString get_name_dance(int place) const;
     dance_t* get_dance(int place) const;
     dance_t* get_dance(QString name) const;
+    int get_dance_number(QString name) const;
+    int get_dance_number(dance_t* dance) const;
     int get_size() const{ return dance_vector.size();}
     bool is_modified() const{ return modified;}
 
@@ -34,10 +36,12 @@ public slots:
     void list_add(dance_t * dance) {add_dance(dance);
                                     qDebug() << "NEW DANCE";}
     void modified_list_slot();
+    void open_dance(QString dance);
 private:
     enum { MagicNumber = 0x7FFC883};
     QVector<dance_t*> dance_vector;
     QMap<QString, dance_t*> fast_find_order;
+    QMap<QString, int> fast_number_order;
     bool modified;
 
     new_dance_d* new_dance_dialog;
@@ -45,7 +49,7 @@ private:
     void add_dance(dance_t* dance);
     bool readFile();
     void make_alphabetical_order();
-    void make_fast_find_order();
+    void make_fast_order();
 };
 
 #endif // DANCE_LIST_H

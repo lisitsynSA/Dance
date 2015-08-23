@@ -43,6 +43,7 @@ public slots:
     void set_showRepeating(bool value){  qDebug() << "SHOW REPEATING"; showRepeating = value; }
     void set_showTime(bool value){  qDebug() << "SHOW TIME"; showTime = value; }
     void set_music(QModelIndex index);
+    void open_dance(QModelIndex index);
 private slots:
     void changed_date(QDate date);
     void add_dance(QString dance);

@@ -23,8 +23,10 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
             this, SLOT(set_music(QModelIndex)));
     connect(listView, SIGNAL(drop_signal(int,QList<int>*)),
             this, SLOT(drop_event(int,QList<int>*)));
-
+    connect(listView, SIGNAL(doubleClicked(QModelIndex)),
+            this, SLOT(open_dance(QModelIndex)));
     calendar = new QCalendarWidget(this);
+
     calendar->setGridVisible(true);
     calendar->setFirstDayOfWeek(Qt::Monday);
     connect(calendar, SIGNAL(clicked(QDate)),
@@ -321,4 +323,10 @@ void dance_class::set_music(QModelIndex index)
 {
     qDebug() << "SET MUSIC:" << index.data();
     music->setText((dancelist->get_dance(index.data().toString()))->get_music());
+}
+
+void dance_class::open_dance(QModelIndex index)
+{
+    qDebug() << "OPEN DANCE: " << index.data();
+    dancelist->open_dance(index.data().toString());
 }

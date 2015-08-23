@@ -67,6 +67,7 @@ void edit_list_d::load_dance(int dance)
     if ((0 <= dance) && (dance < dance_vector->size()))
     {
         qDebug() << "LOAD DANCE FOR EDITTING: " << dance;
+        ui->comboBox->setCurrentIndex(dance);
         ui->textEdit_short->setText((*dance_vector)[dance]->get_short_description());
         ui->textEdit_full->setText((*dance_vector)[dance]->get_description());
         ui->textEdit_music->setText((*dance_vector)[dance]->get_music());

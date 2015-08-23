@@ -51,7 +51,7 @@ bool dance_list::readFile()
     }
 
     make_alphabetical_order();
-    make_fast_find_order();
+    make_fast_order();
     QApplication::restoreOverrideCursor();
     return true;
 }
@@ -86,17 +86,20 @@ void dance_list::make_alphabetical_order()
     //TODO: qsort(dance_vector)
 }
 
-void dance_list::make_fast_find_order()
+void dance_list::make_fast_order()
 {
     for (int i = 0; i < dance_vector.count(); i++)
+    {
         fast_find_order[(dance_vector[i])->get_name()] = dance_vector[i];
+        fast_number_order[(dance_vector[i])->get_name()] = i;
+    }
 }
 
 void dance_list::add_dance(dance_t* dance)
 {
     dance_vector.push_back(dance);
     make_alphabetical_order();
-    make_fast_find_order();
+    make_fast_order();
 }
 
 void dance_list::list_edit_button()
@@ -118,6 +121,12 @@ void dance_list::list_edit_button()
     edit_list_dialog->show();
     edit_list_dialog->raise();
     edit_list_dialog->activateWindow();
+}
+
+void dance_list::open_dance(QString dance)
+{
+    list_edit_button();
+    edit_list_dialog->load_dance(get_dance_number(dance));
 }
 
 void dance_list::list_new_button()
@@ -157,4 +166,14 @@ dance_t* dance_list::get_dance(int place) const
 dance_t* dance_list::get_dance(QString name) const
 {
     return fast_find_order[name];
+}
+
+int dance_list::get_dance_number(QString name) const
+{
+    return fast_number_order[name];
+}
+
+int dance_list::get_dance_number(dance_t* dance) const
+{
+    return get_dance_number(dance->get_name());
 }
