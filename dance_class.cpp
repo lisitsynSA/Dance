@@ -144,10 +144,14 @@ bool dance_class::read_mainFile(const QString &fileName)
     return true;
 }
 
-void dance_class::clear()//TODO: delete: all_classes, current_class, current_date
+void dance_class::clear()
 {
     set_date_format(all_classes, standart);
+    music->setText("");
+    qDeleteAll(all_classes);
     all_classes.clear();
+    model->setStringList(current_class);
+    current_date_modified = false;
 }
 
 void dance_class::set_date_format(QVector<QDate*> dates, QTextCharFormat format)
