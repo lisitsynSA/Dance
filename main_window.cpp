@@ -29,22 +29,11 @@ MainWindow::MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (okToContinue()) {
+    if (prepare_exit()) {
         writeSettings();
         event->accept();
     } else {
         event->ignore();
-    }
-}
-
-void MainWindow::open()
-{
-    if (okToContinue()) {
-        QString fileName = QFileDialog::getOpenFileName(this,
-                                   tr("Open Dance class"), ".",
-                                   tr("Dance class files (*.dc)"));
-        if (!fileName.isEmpty())
-            loadFile(fileName);
     }
 }
 
@@ -210,23 +199,13 @@ void MainWindow::writeSettings()
     settings.setValue("showTime", showTimeAction->isChecked());
 }
 
-bool MainWindow::okToContinue()
+bool MainWindow::prepare_exit()
 {
     danceclass->save_current_date();
     saveFile(curFile);
+    danceclass->clear();
     if (dancelist->is_modified())
-    {
-        int r = QMessageBox::warning(this, tr("Dance class"),
-                        tr("The list of the dances has been modified.\n"
-                           "Do you want to save your changes?"),
-                        QMessageBox::Yes | QMessageBox::No
-                        | QMessageBox::Cancel);
-        if (r == QMessageBox::Yes) {
-            return dancelist->writeFile();
-        } else if (r == QMessageBox::Cancel) {
-            return false;
-        }
-    }
+        return dancelist->writeFile();
     return true;
 }
 

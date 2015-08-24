@@ -27,7 +27,6 @@ public:
     bool is_modified() const{ return modified;}
 
 signals:
-    void modified_list();
     void add_dance_to_lesson(QString);
 
 public slots:

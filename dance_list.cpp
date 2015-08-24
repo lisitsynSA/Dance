@@ -150,7 +150,6 @@ void dance_list::modified_list_slot()
 {
     qDebug() << "LIST IS MODIFIED";
     modified = true;
-    emit modified_list();
 }
 
 QString dance_list::get_name_dance(int place) const

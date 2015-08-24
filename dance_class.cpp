@@ -213,7 +213,7 @@ bool dance_class::readFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
     while (!in.atEnd()) {
         in >> temp;
-        current_class.push_back(temp);
+        current_class.push_back(temp);//TODO: Check the dance
     }
     QApplication::restoreOverrideCursor();
     return true;
@@ -319,7 +319,10 @@ void dance_class::delete_date(QDate date)
         calendar->setDateTextFormat(date, standart);
         for (int i = 0; i < all_classes.size(); i++)
             if (*(all_classes[i]) == date)
+            {
+                delete all_classes[i];
                 all_classes.remove(i);
+            }
     }
 }
 

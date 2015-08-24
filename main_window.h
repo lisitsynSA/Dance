@@ -19,7 +19,6 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    void open();
     void about();
     void updateStatusBar();
     void msg_statusBar(const QString&);
@@ -32,7 +31,7 @@ private:
     void createStatusBar();
     void readSettings();
     void writeSettings();
-    bool okToContinue();
+    bool prepare_exit();
     bool loadFile(const QString &fileName, bool first_load = false);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
