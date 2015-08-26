@@ -24,8 +24,10 @@ signals:
     void add_dance(QString);
     void save_changes();
     void new_dance();
+    void delete_dance(int);
 public slots:
-    void add_dance_slot();
+    void add_button();
+    void delete_button();
     void check_changes();
     void load_dance(int dance);
     void new_button();

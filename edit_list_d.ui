@@ -56,7 +56,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="3" colspan="2">
+   <item row="0" column="3" colspan="3">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QLabel" name="label_3">
@@ -118,6 +118,13 @@
     <widget class="QPushButton" name="newButton">
      <property name="text">
       <string>New</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5">
+    <widget class="QPushButton" name="deleteButton">
+     <property name="text">
+      <string>Delete</string>
      </property>
     </widget>
    </item>

@@ -18,9 +18,11 @@ edit_list_d::edit_list_d(QVector<dance_t*>* init_dance_vector, QWidget* parent):
     connect(ui->saveButton, SIGNAL(clicked()),
             this, SLOT(save_dance()));
     connect(ui->addButton, SIGNAL(clicked()),
-            this, SLOT(add_dance_slot()));
+            this, SLOT(add_button()));
     connect(ui->newButton, SIGNAL(clicked()),
             this, SLOT(new_button()));
+    connect(ui->deleteButton, SIGNAL(clicked()),
+            this, SLOT(delete_button()));
     update_dancelist();
     ui->saveButton->setEnabled(false);
     load_dance(0);
@@ -42,12 +44,21 @@ void edit_list_d::update_dancelist()
     }
 }
 
-void edit_list_d::add_dance_slot()
+void edit_list_d::add_button()
 {
     if (dance_vector->size())
     {
         accept();
         emit add_dance((*dance_vector)[ui->comboBox->currentIndex()]->get_name());
+    }
+}
+
+void edit_list_d::delete_button()
+{
+    if (dance_vector->size())
+    {
+        //accept();
+        emit delete_dance(ui->comboBox->currentIndex());
     }
 }
 

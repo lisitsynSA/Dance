@@ -100,7 +100,11 @@ void dance_list::vector_qsort(int first, int last)
 
         if(i <= j) {
             if (i < j)
-                dance_vector[i]->get_name().swap(dance_vector[j]->get_name());
+            {
+                dance_t* temp = dance_vector[i];
+                dance_vector[i] = dance_vector[j];
+                dance_vector[j] = temp;
+            }
             i++;
             j--;
         }
@@ -121,10 +125,29 @@ QString dance_list::dump()
 
 void dance_list::make_fast_order()
 {
+    fast_find_order.clear();
+    fast_number_order.clear();
     for (int i = 0; i < dance_vector.count(); i++)
     {
         fast_find_order[(dance_vector[i])->get_name()] = dance_vector[i];
         fast_number_order[(dance_vector[i])->get_name()] = i;
+    }
+}
+
+void dance_list::list_delete(int dance)
+{
+    if (QMessageBox::warning(this, tr("Dance class"),
+                             tr("The dance must be deleted from all classes.\n"
+                                "The existing of dance in classes will create wrong empty dance.\n"
+                                "Do you want to delete dance?"),
+                             QMessageBox::Yes | QMessageBox::No)
+            == QMessageBox::Yes)
+    {
+        dance_vector.remove(dance);
+        make_alphabetical_order();
+        make_fast_order();
+        modified_list_slot();
+        list_edit_button();
     }
 }
 
@@ -148,6 +171,8 @@ void dance_list::list_edit_button()
                 this, SIGNAL(add_dance_to_lesson(QString)));
         connect(edit_list_dialog, SIGNAL(new_dance()),
                 this, SLOT(list_new_button()));
+        connect(edit_list_dialog, SIGNAL(delete_dance(int)),
+                this, SLOT(list_delete(int)));
     }
     if (modified)
         edit_list_dialog->update_dancelist();

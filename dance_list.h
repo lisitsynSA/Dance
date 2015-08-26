@@ -35,6 +35,7 @@ public slots:
     void list_new_button();
     void list_add(dance_t * dance) {add_dance(dance);
                                     qDebug() << "NEW DANCE";}
+    void list_delete(int dance);
     void modified_list_slot();
     void open_dance(QString dance);
 private:
@@ -47,6 +48,7 @@ private:
     new_dance_d* new_dance_dialog;
     edit_list_d* edit_list_dialog;
     void add_dance(dance_t* dance);
+    void delete_dance();
     bool readFile();
     void make_alphabetical_order();
     void make_fast_order();
