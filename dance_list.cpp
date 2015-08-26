@@ -83,7 +83,40 @@ bool dance_list::writeFile()
 
 void dance_list::make_alphabetical_order()
 {
-    //TODO: qsort(dance_vector)
+    if (dance_vector.count() > 1)
+    {
+        qDebug() << "QSORT OF LIST";
+        vector_qsort(0, dance_vector.count() - 1);
+    }
+}
+
+void dance_list::vector_qsort(int first, int last)
+{
+    int i = first, j = last;
+    QString x = dance_vector[(first + last) / 2]->get_name();
+    do {
+        while (QString::localeAwareCompare(dance_vector[i]->get_name(), x) < 0) i++;
+        while (QString::localeAwareCompare(dance_vector[j]->get_name(), x) > 0) j--;
+
+        if(i <= j) {
+            if (i < j)
+                dance_vector[i]->get_name().swap(dance_vector[j]->get_name());
+            i++;
+            j--;
+        }
+    } while (i <= j);
+    if (i < last)
+        vector_qsort(i, last);
+    if (first < j)
+        vector_qsort(first, j);
+}
+
+QString dance_list::dump()
+{
+    QString dump = "DANCE LIST: ";
+    for (int i = 0; i < dance_vector.count(); i++)
+        dump += " " + dance_vector[i]->get_name();
+    return dump;
 }
 
 void dance_list::make_fast_order()

@@ -14,10 +14,10 @@ public:
             QString init_music);
     ~dance_t();
 
-    QString get_name() const { return *name; }
-    QString get_short_description() const { return *short_description; }
-    QString get_description() const { return *description; }
-    QString get_music() const { return *music; }
+    QString& get_name() const { return *name; }
+    QString& get_short_description() const { return *short_description; }
+    QString& get_description() const { return *description; }
+    QString& get_music() const { return *music; }
 
     QString set_short_description(QString init) { return *short_description = init; }
     QString set_description(QString init) { return *description = init; }

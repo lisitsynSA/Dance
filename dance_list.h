@@ -50,6 +50,8 @@ private:
     bool readFile();
     void make_alphabetical_order();
     void make_fast_order();
+    void vector_qsort(int first, int last);
+    QString dump();
 };
 
 #endif // DANCE_LIST_H

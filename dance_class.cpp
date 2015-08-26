@@ -293,7 +293,7 @@ void dance_class::changed_date(QDate date)
 }
 
 bool dance_class::find_date(QDate date)
-//TODO: Optimize search
+//TODO: Optimize search(contains in QVector)
 {
     for (int i = 0; i < all_classes.size(); i++)
         if (*(all_classes[i]) == date)
