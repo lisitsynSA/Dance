@@ -69,6 +69,7 @@ private:
     void set_date_format(QVector<QDate*> dates, QTextCharFormat format);
     bool current_date_modified;
     dance_list *dancelist;
+    void check_dance(QString dance);
 
     bool showSpeed;
     bool showRepeating;

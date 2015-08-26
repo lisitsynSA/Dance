@@ -226,12 +226,7 @@ bool dance_class::readFile(const QString &fileName)
     while (!in.atEnd()) {
         in >> temp;
         current_class.push_back(temp);
-        if (!dancelist->find_name(temp))
-        {
-            qDebug() << "Can't find dance: " << temp;
-            dance_t* diff_dance = new dance_t(temp, "", "", "");
-            dancelist->list_add(diff_dance);
-        }
+        check_dance(temp);
     }
     QApplication::restoreOverrideCursor();
     return true;
@@ -345,14 +340,29 @@ void dance_class::delete_date(QDate date)
     }
 }
 
+void dance_class::check_dance(QString dance)
+{
+    if (!dancelist->find_name(dance))
+    {
+        QMessageBox::warning(this, tr("Loading of the dance"),
+                             tr("Can't find dance '%1'.\nCreating of empty '%1' is done.")
+                             .arg(dance));
+        qDebug() << "Can't find dance: " << dance;
+        dance_t* diff_dance = new dance_t(dance, "", "", "");
+        dancelist->list_add(diff_dance);
+    }
+}
+
 void dance_class::set_music(QModelIndex index)
 {
     qDebug() << "SET MUSIC:" << index.data();
+    check_dance(index.data().toString());
     music->setText((dancelist->get_dance(index.data().toString()))->get_music());
 }
 
 void dance_class::open_dance(QModelIndex index)
 {
     qDebug() << "OPEN DANCE: " << index.data();
+    check_dance(index.data().toString());
     dancelist->open_dance(index.data().toString());
 }
