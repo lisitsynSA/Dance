@@ -23,8 +23,7 @@ MainWindow::MainWindow()
     readSettings();
 
     setWindowIcon(QIcon(":/images/icon.png"));
-    setCurrentFile("");
-    loadFile("dc/dances.dc", true);//TODO:delete repeating of recent files
+    setCurrentFile("dc/dances.dc");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -172,7 +171,7 @@ void MainWindow::createStatusBar()
 
     updateStatusBar();
 }
-
+//TODO: Use showSettings
 void MainWindow::readSettings()
 {
     QSettings settings("LiSA", "Dance class");
@@ -202,41 +201,16 @@ void MainWindow::writeSettings()
 bool MainWindow::prepare_exit()
 {
     danceclass->save_current_date();
-    saveFile(curFile);
+    danceclass->write_mainFile();
     danceclass->clear();
     if (dancelist->is_modified())
         return dancelist->writeFile();
     return true;
 }
 
-bool MainWindow::loadFile(const QString &fileName, bool first_load)
-{
-    if (!danceclass->read_mainFile(fileName)) {
-        statusBar()->showMessage(tr("Loading canceled"), 2000);
-        return false;
-    }
-
-    setCurrentFile(fileName);
-    if (!first_load)
-        statusBar()->showMessage(tr("File loaded"), 2000);
-    return true;
-}
-
 void MainWindow::msg_statusBar(const QString &msg)
 {
     statusBar()->showMessage(msg, 2000);
-}
-
-bool MainWindow::saveFile(const QString &fileName)
-{
-    if (!danceclass->write_mainFile(fileName)) {
-        statusBar()->showMessage(tr("Saving canceled"), 2000);
-        return false;
-    }
-
-    setCurrentFile(fileName);
-    statusBar()->showMessage(tr("File saved"), 2000);
-    return true;
 }
 
 void MainWindow::setCurrentFile(const QString &fileName)

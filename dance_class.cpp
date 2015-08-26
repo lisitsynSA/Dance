@@ -38,7 +38,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     underline.setForeground(Qt::magenta);
 
     music  = new QTextBrowser(this);
-
+//TODO: Play music
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
     rightLayout->addWidget(new QLabel("Music:", this));
@@ -48,6 +48,10 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     mainLayout->addWidget(listView);
     mainLayout->addLayout(rightLayout);
     setLayout(mainLayout);
+
+    if (!read_mainFile())
+        write_mainFile();
+
 }
 
 void dance_class::add_dance(QString dance)
@@ -106,10 +110,10 @@ void dance_class::drop_event(int row, QList<int>* list)
     model->setStringList(current_class);
 }
 
-bool dance_class::read_mainFile(const QString &fileName)
+bool dance_class::read_mainFile()
 {
     qDebug() << "READ CLASS MAINFILE";
-    QFile file(fileName);
+    QFile file("dc/dances.dc");
     if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(this, tr("Dance class"),
                              tr("Cannot read file %1:\n%2.")
@@ -135,10 +139,9 @@ bool dance_class::read_mainFile(const QString &fileName)
         temp = new QDate;
         in >> *temp;
         all_classes.push_back(temp);
-
     }
     set_date_format(all_classes, underline);
-    class_path = QFileInfo(fileName).absolutePath();
+    class_path = QFileInfo("dc/dances.dc").absolutePath();
     changed_date(current_date);
     QApplication::restoreOverrideCursor();
     return true;
@@ -160,11 +163,20 @@ void dance_class::set_date_format(QVector<QDate*> dates, QTextCharFormat format)
         calendar->setDateTextFormat(*(dates[i]), format);
 }
 
-bool dance_class::write_mainFile(const QString &fileName)
+bool dance_class::write_mainFile()
 {
     qDebug() << "WRITE CLASS MAINFILE";
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly)) {
+    QDir dir = QDir::current();
+    if (!dir.exists("dc"))
+        if (!dir.mkdir("dc"))
+        {
+            QMessageBox::warning(this, tr("Dance class"),
+                                 tr("Cannot create directory."));
+            return false;
+        }
+    QFile file("dc/dances.dc");
+    if (!file.open(QIODevice::WriteOnly))
+    {
         QMessageBox::warning(this, tr("Dance class"),
                              tr("Cannot write file %1:\n%2.")
                              .arg(file.fileName())
@@ -213,7 +225,8 @@ bool dance_class::readFile(const QString &fileName)
     QApplication::setOverrideCursor(Qt::WaitCursor);
     while (!in.atEnd()) {
         in >> temp;
-        current_class.push_back(temp);//TODO: Check the dance
+        current_class.push_back(temp);
+//TODO: Check the dance
     }
     QApplication::restoreOverrideCursor();
     return true;
@@ -274,7 +287,8 @@ void dance_class::changed_date(QDate date)
     emit modified_date();
 }
 
-bool dance_class::find_date(QDate date)//TODO: Optimize search
+bool dance_class::find_date(QDate date)
+//TODO: Optimize search
 {
     for (int i = 0; i < all_classes.size(); i++)
         if (*(all_classes[i]) == date)

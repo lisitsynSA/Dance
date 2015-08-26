@@ -32,8 +32,6 @@ private:
     void readSettings();
     void writeSettings();
     bool prepare_exit();
-    bool loadFile(const QString &fileName, bool first_load = false);
-    bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
     QString strippedName(const QString &fullFileName);
 

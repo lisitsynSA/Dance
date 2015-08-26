@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QDate>
+#include <QDir>
 #include <QVector>
 #include <QTextCharFormat>
 #include "listview_t.h"
@@ -21,8 +22,8 @@ public:
     explicit dance_class(dance_list *init_dancelist, QWidget *parent = 0);
 
     void clear();
-    bool read_mainFile(const QString &fileName);
-    bool write_mainFile(const QString &fileName);
+    bool read_mainFile();
+    bool write_mainFile();
     bool readFile(const QString &fileName);
     bool writeFile(const QString &fileName);
     bool removeFile(const QString &fileName);
