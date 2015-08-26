@@ -100,6 +100,7 @@ void dance_list::add_dance(dance_t* dance)
     dance_vector.push_back(dance);
     make_alphabetical_order();
     make_fast_order();
+    modified_list_slot();
 }
 
 void dance_list::list_edit_button()
@@ -137,8 +138,6 @@ void dance_list::list_new_button()
         new_dance_dialog = new new_dance_d(&dance_vector, this);
         connect(new_dance_dialog, SIGNAL(send_dance(dance_t*)),
                 this, SLOT(list_add(dance_t*)));
-        connect(new_dance_dialog, SIGNAL(accepted()),
-                this, SLOT(modified_list_slot()));
     }
 
     new_dance_dialog->show();
@@ -175,4 +174,11 @@ int dance_list::get_dance_number(QString name) const
 int dance_list::get_dance_number(dance_t* dance) const
 {
     return get_dance_number(dance->get_name());
+}
+
+bool dance_list::find_name(QString name)
+{
+    if (fast_find_order.find(name) == fast_find_order.end())
+        return false;
+    return true;
 }

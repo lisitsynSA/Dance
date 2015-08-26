@@ -226,7 +226,12 @@ bool dance_class::readFile(const QString &fileName)
     while (!in.atEnd()) {
         in >> temp;
         current_class.push_back(temp);
-//TODO: Check the dance
+        if (!dancelist->find_name(temp))
+        {
+            qDebug() << "Can't find dance: " << temp;
+            dance_t* diff_dance = new dance_t(temp, "", "", "");
+            dancelist->list_add(diff_dance);
+        }
     }
     QApplication::restoreOverrideCursor();
     return true;

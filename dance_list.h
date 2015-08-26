@@ -24,6 +24,7 @@ public:
     int get_dance_number(QString name) const;
     int get_dance_number(dance_t* dance) const;
     int get_size() const{ return dance_vector.size();}
+    bool find_name(QString name);
     bool is_modified() const{ return modified;}
 
 signals:
