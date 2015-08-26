@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 
 class QAction;
 class QLabel;
@@ -40,6 +41,7 @@ private:
     dance_list *dancelist;
     QLabel *dateLabel;
     QString curFile;
+    QTimer* timer;
 
     QMenu *dance_classMenu;
     QMenu *optionsMenu;

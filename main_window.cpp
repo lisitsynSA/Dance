@@ -22,6 +22,11 @@ MainWindow::MainWindow()
 
     readSettings();
 
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()),
+            this, SLOT(save()));
+    timer->start(5*60*1000);//5 minutes
+
     setWindowIcon(QIcon(":/images/icon.png"));
     setCurrentFile("dc/dances.dc");
 }
@@ -202,6 +207,7 @@ void MainWindow::save()
     danceclass->save_current_date();
     danceclass->save_mainFile();
     dancelist->saveFile();
+    msg_statusBar("Files are saved");
 }
 
 void MainWindow::prepare_exit()
