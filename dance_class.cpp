@@ -11,6 +11,7 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
 
     dancelist = init_dancelist;
     current_date_modified = false;
+    mainfile_modified = false;
 
     model = new QStringListModel(this);
 
@@ -161,6 +162,16 @@ void dance_class::set_date_format(QVector<QDate*> dates, QTextCharFormat format)
 {
     for (int i = 0; i < dates.size(); i++)
         calendar->setDateTextFormat(*(dates[i]), format);
+}
+
+bool dance_class::save_mainFile()
+{
+    if (mainfile_modified)
+    {
+        mainfile_modified = false;
+        return write_mainFile();
+    }
+    return true;
 }
 
 bool dance_class::write_mainFile()
@@ -323,6 +334,7 @@ void dance_class::add_date(QDate date)
         QDate* temp = new QDate;
         *temp = date;
         all_classes.push_back(temp);
+        mainfile_modified = true;
     }
 }
 
@@ -337,6 +349,7 @@ void dance_class::delete_date(QDate date)
                 delete all_classes[i];
                 all_classes.remove(i);
             }
+        mainfile_modified = true;
     }
 }
 

@@ -39,7 +39,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Dance Class"),
-            tr("<h2>Dance Class 1.1</h2>"
+            tr("<h2>Dance Class 1.0</h2>"
                "<p>Copyright &copy; 2015 Lisitsyn Sergey(KIM MIPT)."
                "<p>Dance Class is a small application that "
                "helps to plan and track training."));
@@ -84,6 +84,7 @@ void MainWindow::createActions()
 
     listNewAction = new QAction(tr("&New"), this);
     listNewAction->setIcon(QIcon(":/images/new_dance.png"));
+    listNewAction->setShortcut(QKeySequence::New);
     listNewAction->setStatusTip(tr("Create a new dance in the dictionary"));
     connect(listNewAction, SIGNAL(triggered()),
             dancelist, SLOT(list_new_button()));
@@ -172,6 +173,7 @@ void MainWindow::createStatusBar()
     updateStatusBar();
 }
 //TODO: Use showSettings
+
 void MainWindow::readSettings()
 {
     QSettings settings("LiSA", "Dance class");
@@ -201,7 +203,7 @@ void MainWindow::writeSettings()
 bool MainWindow::prepare_exit()
 {
     danceclass->save_current_date();
-    danceclass->write_mainFile();
+    danceclass->save_mainFile();
     danceclass->clear();
     if (dancelist->is_modified())
         return dancelist->writeFile();
