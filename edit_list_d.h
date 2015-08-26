@@ -22,7 +22,7 @@ public:
     void update_dancelist();
 signals:
     void add_dance(QString);
-    void save_changes();
+    void save_changes(int dance);
     void new_dance();
     void delete_dance(int);
 public slots:

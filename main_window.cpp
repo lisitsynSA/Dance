@@ -28,12 +28,9 @@ MainWindow::MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (prepare_exit()) {
-        writeSettings();
-        event->accept();
-    } else {
-        event->ignore();
-    }
+    prepare_exit();
+    writeSettings();
+    event->accept();
 }
 
 void MainWindow::about()
@@ -200,14 +197,17 @@ void MainWindow::writeSettings()
     settings.setValue("showTime", showTimeAction->isChecked());
 }
 
-bool MainWindow::prepare_exit()
+void MainWindow::save()
 {
     danceclass->save_current_date();
     danceclass->save_mainFile();
+    dancelist->saveFile();
+}
+
+void MainWindow::prepare_exit()
+{
+    save();
     danceclass->clear();
-    if (dancelist->is_modified())
-        return dancelist->writeFile();
-    return true;
 }
 
 void MainWindow::msg_statusBar(const QString &msg)

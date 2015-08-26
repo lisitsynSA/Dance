@@ -22,6 +22,7 @@ private slots:
     void about();
     void updateStatusBar();
     void msg_statusBar(const QString&);
+    void save();
 
 private:
     void createActions();
@@ -31,7 +32,7 @@ private:
     void createStatusBar();
     void readSettings();
     void writeSettings();
-    bool prepare_exit();
+    void prepare_exit();
     void setCurrentFile(const QString &fileName);
     QString strippedName(const QString &fullFileName);
 

@@ -98,5 +98,5 @@ void edit_list_d::save_dance()
     (*dance_vector)[dance]->set_description(ui->textEdit_full->toPlainText());
     (*dance_vector)[dance]->set_short_description(ui->textEdit_short->toPlainText());
     ui->saveButton->setEnabled(false);
-    emit save_changes();
+    emit save_changes(dance);
 }

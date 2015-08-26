@@ -56,6 +56,16 @@ bool dance_list::readFile()
     return true;
 }
 
+bool dance_list::saveFile()
+{
+    if (modified)
+    {
+        modified = false;
+        return writeFile();
+    }
+    return true;
+}
+
 bool dance_list::writeFile()
 {
     qDebug() << "WRITE LIST FILE";
@@ -101,6 +111,7 @@ void dance_list::vector_qsort(int first, int last)
         if(i <= j) {
             if (i < j)
             {
+                modified = true;
                 dance_t* temp = dance_vector[i];
                 dance_vector[i] = dance_vector[j];
                 dance_vector[j] = temp;
@@ -165,8 +176,8 @@ void dance_list::list_edit_button()
     if (!edit_list_dialog)
     {
         edit_list_dialog = new edit_list_d(&dance_vector, this);
-        connect(edit_list_dialog, SIGNAL(save_changes()),
-                this, SLOT(modified_list_slot()));
+        connect(edit_list_dialog, SIGNAL(save_changes(int)),
+                this, SLOT(modified_list_slot(int)));
         connect(edit_list_dialog, SIGNAL(add_dance(QString)),
                 this, SIGNAL(add_dance_to_lesson(QString)));
         connect(edit_list_dialog, SIGNAL(new_dance()),
@@ -174,8 +185,6 @@ void dance_list::list_edit_button()
         connect(edit_list_dialog, SIGNAL(delete_dance(int)),
                 this, SLOT(list_delete(int)));
     }
-    if (modified)
-        edit_list_dialog->update_dancelist();
 
     edit_list_dialog->show();
     edit_list_dialog->raise();
@@ -203,10 +212,13 @@ void dance_list::list_new_button()
     new_dance_dialog->activateWindow();
 }
 
-void dance_list::modified_list_slot()
+void dance_list::modified_list_slot(int dance)
 {
     qDebug() << "LIST IS MODIFIED";
     modified = true;
+    edit_list_dialog->update_dancelist();
+    if (dance)
+        edit_list_dialog->load_dance(dance);
 }
 
 QString dance_list::get_name_dance(int place) const

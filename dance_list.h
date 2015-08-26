@@ -16,6 +16,7 @@ public:
     explicit dance_list(QWidget *parent = 0);
     ~dance_list();
 
+    bool saveFile();
     bool writeFile();
     QVector<dance_t*>* get_dance_vector() {return &dance_vector;}
     QString get_name_dance(int place) const;
@@ -36,7 +37,7 @@ public slots:
     void list_add(dance_t * dance) {add_dance(dance);
                                     qDebug() << "NEW DANCE";}
     void list_delete(int dance);
-    void modified_list_slot();
+    void modified_list_slot(int dance = 0);
     void open_dance(QString dance);
 private:
     enum { MagicNumber = 0x7FFC883};
