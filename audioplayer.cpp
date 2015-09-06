@@ -28,7 +28,12 @@ audioplayer::audioplayer(QWidget *parent) :
 
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setContentsMargins(8, 8, 8, 8);
+
     listView = new QListView(this);
+    listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    listView->setDragDropMode(QAbstractItemView::NoDragDrop);
+
     vLayout->addWidget(listView);
 
     name_music = new QLabel(this);
@@ -108,14 +113,24 @@ audioplayer::audioplayer(QWidget *parent) :
 
     m_audioOutputPath = Phonon::createPath(&m_MediaObject, &m_AudioOutput);
 
-    set_file("music/black horse.mp3");
+    model = new QStringListModel(this);
+    listView->setModel(model);
+
+
+    current_music.push_back("black horse.mp3");
+    current_music.push_back("Sappy.mp3");
+    model->setStringList(current_music);
+
     playButton->setEnabled(true);
+    backwardButton->setEnabled(true);
+    forwardButton->setEnabled(true);
     stopButton->setEnabled(true);
 }
 
 void audioplayer::set_file(const QString &file)
 {
-    m_MediaObject.setCurrentSource(Phonon::MediaSource(file));
+    name_music->setText(file);
+    m_MediaObject.setCurrentSource(Phonon::MediaSource("music/" + file));
     m_MediaObject.play();
 }
 
@@ -188,12 +203,19 @@ void audioplayer::update_time()
 
 void audioplayer::open_music(QModelIndex index)
 {
-
+    qDebug() << "OPEN MUSIC:" << index.data();
+    if (check_music(index.data().toString()))
+        set_file(index.data().toString());
 }
 
 void audioplayer::finished()
 {
 
+}
+
+bool audioplayer::check_music(QString music)
+{
+    return true;
 }
 
 void audioplayer::state_changed(Phonon::State new_state, Phonon::State old_state)

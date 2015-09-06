@@ -10,6 +10,8 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QTime>
+#include <QStringList>
+#include <QStringListModel>
 
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
@@ -17,7 +19,6 @@
 #include <phonon/volumeslider.h>
 
 class QLabel;
-class QStringListModel;
 
 class audioplayer : public QWidget
 {
@@ -39,9 +40,10 @@ public slots:
 
     void state_changed(Phonon::State new_state, Phonon::State old_state);
 private:
+    bool check_music(QString music);
     QListView *listView;
     QStringListModel *model;
-    QStringList *current_music;
+    QStringList current_music;
 
     QLabel *name_music;
     QIcon play_icon;
