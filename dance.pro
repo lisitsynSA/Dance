@@ -1,3 +1,5 @@
+QT += phonon
+
 HEADERS += \
     main_window.h \
     dance_class.h \
@@ -5,7 +7,8 @@ HEADERS += \
     dance_list.h \
     new_dance_d.h \
     edit_list_d.h \
-    listview_t.h
+    listview_t.h \
+    audioplayer.h
 
 SOURCES += \
     main_window.cpp \
@@ -15,7 +18,8 @@ SOURCES += \
     dance_list.cpp \
     new_dance_d.cpp \
     edit_list_d.cpp \
-    listview_t.cpp
+    listview_t.cpp \
+    audioplayer.cpp
 
 FORMS += \
     new_dance_d.ui \

@@ -38,13 +38,13 @@ dance_class::dance_class(dance_list *init_dancelist, QWidget *parent) :
     underline.setFontPointSize(15);
     underline.setForeground(Qt::magenta);
 
-    music  = new QTextBrowser(this);
+    player = new audioplayer(this);
 //TODO: Play music
     QVBoxLayout *rightLayout = new QVBoxLayout;
     rightLayout->addWidget(calendar);
     rightLayout->addWidget(new QLabel("Music:", this));
-    rightLayout->addWidget(music);
 
+    rightLayout->addWidget(player);
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addWidget(listView);
     mainLayout->addLayout(rightLayout);
@@ -151,7 +151,6 @@ bool dance_class::read_mainFile()
 void dance_class::clear()
 {
     set_date_format(all_classes, standart);
-    music->setText("");
     qDeleteAll(all_classes);
     all_classes.clear();
     model->setStringList(current_class);
@@ -182,7 +181,7 @@ bool dance_class::write_mainFile()
         if (!dir.mkdir("dc"))
         {
             QMessageBox::warning(this, tr("Dance class"),
-                                 tr("Cannot create directory."));
+                                 tr("Cannot create directory 'dc'."));
             return false;
         }
     QFile file("dc/dances.dc");
@@ -294,7 +293,6 @@ void dance_class::changed_date(QDate date)
         readFile(class_path + '/' + date.toString("dd_MM_yyyy"));
     qDebug() << "CHANGED DATE" << date;
     model->setStringList(current_class);
-    music->setText("");
     emit modified_date();
 }
 
@@ -370,7 +368,7 @@ void dance_class::set_music(QModelIndex index)
 {
     qDebug() << "SET MUSIC:" << index.data();
     check_dance(index.data().toString());
-    music->setText((dancelist->get_dance(index.data().toString()))->get_music());
+    //LOAD TO PLAYER
 }
 
 void dance_class::open_dance(QModelIndex index)

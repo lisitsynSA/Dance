@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QTextCharFormat>
 #include "listview_t.h"
+#include "audioplayer.h"
 
 class QWidget;
 class QTextBrowser;
@@ -53,9 +54,9 @@ private slots:
 private:
     enum { MagicNumber = 0x7FFF883};
     QCalendarWidget *calendar;
-    QTextBrowser * music;
     QTextCharFormat standart;
     QTextCharFormat underline;
+    audioplayer* player;
 
     listview_t *listView;
     QStringListModel *model;
