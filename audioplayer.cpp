@@ -36,9 +36,18 @@ audioplayer::audioplayer(QWidget *parent) :
 
     vLayout->addWidget(listView);
 
+    QHBoxLayout *hLayout = new QHBoxLayout(this);
     name_music = new QLabel(this);
     name_music->setText("Name of Music");
-    vLayout->addWidget(name_music);
+    hLayout->addWidget(name_music);
+
+    finish_box = new QComboBox(this);
+    finish_box->addItem("Without repeating");
+    finish_box->addItem("With repeating");
+    finish_box->addItem("All music");
+
+    hLayout->addWidget(finish_box);
+    vLayout->addLayout(hLayout);
 
     QHBoxLayout *layout = new QHBoxLayout();
 
@@ -110,6 +119,7 @@ audioplayer::audioplayer(QWidget *parent) :
         if(!dir.mkdir("music"))
             QMessageBox::warning(this, tr("Dance class"),
                                  tr("Cannot create directory 'music'."));
+    music_dir = QDir(dir.absoluteFilePath("music"));
 
     m_audioOutputPath = Phonon::createPath(&m_MediaObject, &m_AudioOutput);
 
@@ -118,20 +128,17 @@ audioplayer::audioplayer(QWidget *parent) :
 
 
     current_music.push_back("black horse.mp3");
+    current_music.push_back("error.mp3");
     current_music.push_back("Sappy.mp3");
-    model->setStringList(current_music);
-
-    playButton->setEnabled(true);
-    backwardButton->setEnabled(true);
-    forwardButton->setEnabled(true);
-    stopButton->setEnabled(true);
+    get_list(&current_music);
 }
 
-void audioplayer::set_file(const QString &file)
+void audioplayer::set_file(const QString &file, bool play)
 {
     name_music->setText(file);
     m_MediaObject.setCurrentSource(Phonon::MediaSource("music/" + file));
-    m_MediaObject.play();
+    if (play)
+        m_MediaObject.play();
 }
 
 void audioplayer::set_volume(qreal volume)
@@ -141,7 +148,30 @@ void audioplayer::set_volume(qreal volume)
 
 void audioplayer::get_list(QStringList* music)
 {
-
+    qDebug() << "GET LIST OF MUSIC";
+    music_size = music->count();
+    if (music->isEmpty())
+    {
+        playButton->setEnabled(false);
+        backwardButton->setEnabled(false);
+        forwardButton->setEnabled(false);
+        stopButton->setEnabled(false);
+    } else {
+        playButton->setEnabled(true);
+        stopButton->setEnabled(true);
+        if (++music->begin() != music->end())
+        {
+            backwardButton->setEnabled(true);
+            forwardButton->setEnabled(true);
+        } else {
+            backwardButton->setEnabled(false);
+            forwardButton->setEnabled(false);
+        }
+    }
+    current_music = *music;
+    music_index = 0;
+    load_index(false);
+    model->setStringList(current_music);
 }
 
 void audioplayer::play_button()
@@ -158,12 +188,26 @@ void audioplayer::play_button()
 
 void audioplayer::backward_button()
 {
-
+    m_MediaObject.stop();
+    if (--music_index == -1)
+        music_index = music_size - 1;
+    load_index();
 }
 
 void audioplayer::forward_button()
 {
+    m_MediaObject.stop();
+    if (++music_index >= music_size)
+        music_index = 0;
+    load_index();
+}
 
+void audioplayer::load_index(bool play)
+{
+    qDebug() << "LOAD MUSIC FROM INDEX: " << music_index;
+    QString music_name = current_music[music_index];
+    if (check_music(music_name))
+        set_file(music_name, play);
 }
 
 void audioplayer::stop_button()
@@ -205,17 +249,37 @@ void audioplayer::open_music(QModelIndex index)
 {
     qDebug() << "OPEN MUSIC:" << index.data();
     if (check_music(index.data().toString()))
+    {
         set_file(index.data().toString());
+        music_index = index.row();
+    }
 }
 
 void audioplayer::finished()
 {
-
+    switch (finish_box->currentIndex())
+    {
+    case 1: //with repeating
+        load_index();
+        break;
+    case 2: //all music
+        forward_button();
+        break;
+    case 0: //without repeting
+    default:
+        break;
+    }
 }
 
 bool audioplayer::check_music(QString music)
 {
-    return true;
+    if (music_dir.exists(music))
+        return true;
+    QMessageBox::warning(this, tr("Loading of the music"),
+                         tr("Can't find music '%1'.")
+                         .arg(music));
+    qDebug() << "Can't find music: " << music;
+    return false;
 }
 
 void audioplayer::state_changed(Phonon::State new_state, Phonon::State old_state)

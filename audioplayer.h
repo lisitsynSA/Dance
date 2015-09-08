@@ -12,6 +12,8 @@
 #include <QTime>
 #include <QStringList>
 #include <QStringListModel>
+#include <QDebug>
+#include <QComboBox>
 
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
@@ -25,7 +27,7 @@ class audioplayer : public QWidget
     Q_OBJECT
 public:
     audioplayer(QWidget *parent = 0);
-    void set_file(const QString &file);
+    void set_file(const QString &file, bool play = true);
     void set_volume(qreal volume);
 
 public slots:
@@ -41,9 +43,13 @@ public slots:
     void state_changed(Phonon::State new_state, Phonon::State old_state);
 private:
     bool check_music(QString music);
+    void load_index(bool play = true);
     QListView *listView;
     QStringListModel *model;
     QStringList current_music;
+    int music_index;
+    int music_size;
+    QDir music_dir;
 
     QLabel *name_music;
     QIcon play_icon;
@@ -56,6 +62,7 @@ private:
     QLabel *timeLabel;
     QLabel *progressLabel;
     Phonon::VolumeSlider *volume;
+    QComboBox *finish_box;
 
     Phonon::MediaObject m_MediaObject;
     Phonon::AudioOutput m_AudioOutput;
