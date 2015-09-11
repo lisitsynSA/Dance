@@ -125,12 +125,7 @@ audioplayer::audioplayer(QWidget *parent) :
 
     model = new QStringListModel(this);
     listView->setModel(model);
-
-
-    current_music.push_back("black horse.mp3");
-    current_music.push_back("error.mp3");
-    current_music.push_back("Sappy.mp3");
-    get_list(&current_music);
+    set_list(current_music);
 }
 
 void audioplayer::set_file(const QString &file, bool play)
@@ -146,11 +141,11 @@ void audioplayer::set_volume(qreal volume)
     m_AudioOutput.setVolume(volume);
 }
 
-void audioplayer::get_list(QStringList* music)
+void audioplayer::set_list(QStringList music)
 {
-    qDebug() << "GET LIST OF MUSIC";
-    music_size = music->count();
-    if (music->isEmpty())
+    qDebug() << "SET LIST OF MUSIC";
+    music_size = music.count();
+    if (music.isEmpty())
     {
         playButton->setEnabled(false);
         backwardButton->setEnabled(false);
@@ -159,7 +154,7 @@ void audioplayer::get_list(QStringList* music)
     } else {
         playButton->setEnabled(true);
         stopButton->setEnabled(true);
-        if (++music->begin() != music->end())
+        if (++music.begin() != music.end())
         {
             backwardButton->setEnabled(true);
             forwardButton->setEnabled(true);
@@ -168,7 +163,7 @@ void audioplayer::get_list(QStringList* music)
             forwardButton->setEnabled(false);
         }
     }
-    current_music = *music;
+    current_music = music;
     music_index = 0;
     load_index(false);
     model->setStringList(current_music);
@@ -205,6 +200,9 @@ void audioplayer::forward_button()
 void audioplayer::load_index(bool play)
 {
     qDebug() << "LOAD MUSIC FROM INDEX: " << music_index;
+    if (current_music.isEmpty())
+        return;
+
     QString music_name = current_music[music_index];
     if (check_music(music_name))
         set_file(music_name, play);

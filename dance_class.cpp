@@ -368,7 +368,7 @@ void dance_class::set_music(QModelIndex index)
 {
     qDebug() << "SET MUSIC:" << index.data();
     check_dance(index.data().toString());
-    //LOAD TO PLAYER
+    player->set_list(dancelist->get_dance(index.data().toString())->get_music());
 }
 
 void dance_class::open_dance(QModelIndex index)

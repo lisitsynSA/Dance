@@ -31,7 +31,7 @@ public:
     void set_volume(qreal volume);
 
 public slots:
-    void get_list(QStringList* music);
+    void set_list(QStringList music);
     void play_button();
     void backward_button();
     void forward_button();
