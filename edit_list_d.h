@@ -4,7 +4,9 @@
 #include <QDebug>
 #include <QDialog>
 #include <QVector>
+#include <QStringListModel>
 #include "dance_t.h"
+//#include "new_music_d.h"
 
 namespace Ui {
 class edit_list_d;
@@ -32,10 +34,15 @@ public slots:
     void load_dance(int dance);
     void new_button();
     void save_dance();
+    void add_music_button();
+    void delete_music_button();
 private:
     Ui::edit_list_d *ui;
     QVector<dance_t*>* dance_vector;
 
+    //QListView ui->listView_music;
+    QStringListModel *music_model;
+    QStringList current_music;
 };
 
 #endif // EDIT_LIST_D_H

@@ -2,6 +2,7 @@
 #define NEW_DANCE_D_H
 
 #include <QDialog>
+#include <QStringListModel>
 #include "dance_t.h"
 
 namespace Ui {
@@ -21,10 +22,16 @@ signals:
 private slots:
     void create_dance();
     void on_lineEdit_textChanged();
+    void add_music_button();
+    void delete_music_button();
 private:
     bool find_dance(QString name);
     Ui::new_dance_d *ui;
     QVector<dance_t*>* dance_vector;
+
+    //QListView ui->listView_music;
+    QStringListModel *music_model;
+    QStringList current_music;
 };
 
 #endif // NEW_DANCE_D_H

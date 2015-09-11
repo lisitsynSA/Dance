@@ -7,14 +7,24 @@ edit_list_d::edit_list_d(QVector<dance_t*>* init_dance_vector, QWidget* parent):
     dance_vector(init_dance_vector)
 {
     ui->setupUi(this);
+    music_model = new QStringListModel(this);
+    ui->listView_music->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->listView_music->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->listView_music->setDragDropMode(QAbstractItemView::NoDragDrop);
+    ui->listView_music->setModel(music_model);
+
+    ui->addButton->setDefault(true);
+
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(load_dance(int)));
     connect(ui->textEdit_full, SIGNAL(textChanged()),
             this, SLOT(check_changes()));
     connect(ui->textEdit_short, SIGNAL(textChanged()),
             this, SLOT(check_changes()));
-    connect(ui->textEdit_music, SIGNAL(textChanged()),
-            this, SLOT(check_changes()));
+    connect(ui->add_musicButton, SIGNAL(clicked()),
+            this, SLOT(add_music_button()));
+    connect(ui->delete_musicButton, SIGNAL(clicked()),
+            this, SLOT(delete_music_button()));
     connect(ui->saveButton, SIGNAL(clicked()),
             this, SLOT(save_dance()));
     connect(ui->addButton, SIGNAL(clicked()),
@@ -67,7 +77,7 @@ void edit_list_d::check_changes()
     int dance = ui->comboBox->currentIndex();
     if ((*dance_vector)[dance]->get_short_description() == ui->textEdit_short->toPlainText() &&
         (*dance_vector)[dance]->get_description() == ui->textEdit_full->toPlainText() &&
-        (*dance_vector)[dance]->get_music() == ui->textEdit_music->toPlainText())
+        (*dance_vector)[dance]->get_music() == current_music)
         ui->saveButton->setEnabled(false);
     else
         ui->saveButton->setEnabled(true);
@@ -81,7 +91,8 @@ void edit_list_d::load_dance(int dance)
         ui->comboBox->setCurrentIndex(dance);
         ui->textEdit_short->setText((*dance_vector)[dance]->get_short_description());
         ui->textEdit_full->setText((*dance_vector)[dance]->get_description());
-        ui->textEdit_music->setText((*dance_vector)[dance]->get_music());
+        current_music =(*dance_vector)[dance]->get_music();
+        music_model->setStringList(current_music);
     }
 }
 
@@ -94,9 +105,19 @@ void edit_list_d::new_button()
 void edit_list_d::save_dance()
 {
     int dance = ui->comboBox->currentIndex();
-    (*dance_vector)[dance]->set_music(ui->textEdit_music->toPlainText());
+    (*dance_vector)[dance]->set_music(current_music);
     (*dance_vector)[dance]->set_description(ui->textEdit_full->toPlainText());
     (*dance_vector)[dance]->set_short_description(ui->textEdit_short->toPlainText());
     ui->saveButton->setEnabled(false);
     emit save_changes(dance);
+}
+
+void edit_list_d::add_music_button()
+{
+    check_changes();
+}
+
+void edit_list_d::delete_music_button()
+{
+    check_changes();
 }

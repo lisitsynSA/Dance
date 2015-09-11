@@ -359,7 +359,7 @@ void dance_class::check_dance(QString dance)
                              tr("Can't find dance '%1'.\nCreating of empty '%1' is done.")
                              .arg(dance));
         qDebug() << "Can't find dance: " << dance;
-        dance_t* diff_dance = new dance_t(dance, "", "", "");
+        dance_t* diff_dance = new dance_t(dance, "", "", QStringList());
         dancelist->list_add(diff_dance);
     }
 }
