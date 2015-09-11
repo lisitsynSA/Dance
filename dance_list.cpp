@@ -216,9 +216,12 @@ void dance_list::modified_list_slot(int dance)
 {
     qDebug() << "LIST IS MODIFIED";
     modified = true;
-    edit_list_dialog->update_dancelist();
-    if (dance)
-        edit_list_dialog->load_dance(dance);
+    if (edit_list_dialog)
+    {
+        edit_list_dialog->update_dancelist();
+        if (dance)
+            edit_list_dialog->load_dance(dance);
+    }
 }
 
 QString dance_list::get_name_dance(int place) const

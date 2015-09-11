@@ -75,7 +75,6 @@ void edit_list_d::delete_button()
 
 void edit_list_d::check_changes()
 {
-    qDebug() << current_music;//TODO: Fix bug
     int dance = ui->comboBox->currentIndex();
     if ((*dance_vector)[dance]->get_short_description() == ui->textEdit_short->toPlainText() &&
         (*dance_vector)[dance]->get_description() == ui->textEdit_full->toPlainText() &&
@@ -96,6 +95,7 @@ void edit_list_d::load_dance(int dance)
         current_music.clear();
         current_music =(*dance_vector)[dance]->get_music();
         music_model->setStringList(current_music);
+        check_changes();
     }
 }
 

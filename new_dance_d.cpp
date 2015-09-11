@@ -6,7 +6,8 @@
 new_dance_d::new_dance_d(QVector<dance_t*>* init_dance_vector, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::new_dance_d),
-    dance_vector(init_dance_vector)
+    dance_vector(init_dance_vector),
+    new_music(0)
 {
     ui->setupUi(this);
     music_model = new QStringListModel(this);
