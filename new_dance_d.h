@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QStringListModel>
 #include "dance_t.h"
+#include "new_music_d.h"
 
 namespace Ui {
 class new_dance_d;
@@ -23,6 +24,7 @@ private slots:
     void create_dance();
     void on_lineEdit_textChanged();
     void add_music_button();
+    void add_music(QString music);
     void delete_music_button();
 private:
     bool find_dance(QString name);
@@ -32,6 +34,7 @@ private:
     //QListView ui->listView_music;
     QStringListModel *music_model;
     QStringList current_music;
+    new_music_d *new_music;
 };
 
 #endif // NEW_DANCE_D_H

@@ -70,8 +70,35 @@ void new_dance_d::on_lineEdit_textChanged()
 
 void new_dance_d::add_music_button()
 {
+    qDebug() << "NEW MUSIC";
+    if (!new_music)
+    {
+     new_music = new new_music_d(this);
+     connect(new_music, SIGNAL(add_music(QString)),
+             this, SLOT(add_music(QString)));
+    }
+    new_music->update_tree();
+    new_music->show();
+    new_music->raise();
+    new_music->activateWindow();
+}
+
+void new_dance_d::add_music(QString music)
+{
+    qDebug() << "ADD MUSIC:" << music;
+    if (!current_music.contains(music))
+    {
+        current_music.push_back(music);
+        current_music.sort();
+        music_model->setStringList(current_music);
+    }
 }
 
 void new_dance_d::delete_music_button()
 {
+    qDebug() << "DELETE MUSIC";
+    if (current_music.isEmpty())
+        return;
+    current_music.removeOne(ui->listView_music->currentIndex().data().toString());
+    music_model->setStringList(current_music);
 }

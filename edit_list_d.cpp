@@ -4,7 +4,8 @@
 edit_list_d::edit_list_d(QVector<dance_t*>* init_dance_vector, QWidget* parent):
     QDialog(parent),
     ui(new Ui::edit_list_d),
-    dance_vector(init_dance_vector)
+    dance_vector(init_dance_vector),
+    new_music(0)
 {
     ui->setupUi(this);
     music_model = new QStringListModel(this);
@@ -74,6 +75,7 @@ void edit_list_d::delete_button()
 
 void edit_list_d::check_changes()
 {
+    qDebug() << current_music;//TODO: Fix bug
     int dance = ui->comboBox->currentIndex();
     if ((*dance_vector)[dance]->get_short_description() == ui->textEdit_short->toPlainText() &&
         (*dance_vector)[dance]->get_description() == ui->textEdit_full->toPlainText() &&
@@ -91,6 +93,7 @@ void edit_list_d::load_dance(int dance)
         ui->comboBox->setCurrentIndex(dance);
         ui->textEdit_short->setText((*dance_vector)[dance]->get_short_description());
         ui->textEdit_full->setText((*dance_vector)[dance]->get_description());
+        current_music.clear();
         current_music =(*dance_vector)[dance]->get_music();
         music_model->setStringList(current_music);
     }
@@ -114,10 +117,37 @@ void edit_list_d::save_dance()
 
 void edit_list_d::add_music_button()
 {
-    check_changes();
+    qDebug() << "NEW MUSIC";
+    if (!new_music)
+    {
+     new_music = new new_music_d(this);
+     connect(new_music, SIGNAL(add_music(QString)),
+             this, SLOT(add_music(QString)));
+    }
+    new_music->update_tree();
+    new_music->show();
+    new_music->raise();
+    new_music->activateWindow();
+}
+
+void edit_list_d::add_music(QString music)
+{
+    qDebug() << "ADD MUSIC:" << music;
+    if (!current_music.contains(music))
+    {
+        current_music.push_back(music);
+        current_music.sort();
+        music_model->setStringList(current_music);
+        check_changes();
+    }
 }
 
 void edit_list_d::delete_music_button()
 {
+    qDebug() << "DELETE MUSIC";
+    if (current_music.isEmpty())
+        return;
+    current_music.removeOne(ui->listView_music->currentIndex().data().toString());
+    music_model->setStringList(current_music);
     check_changes();
 }

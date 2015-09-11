@@ -6,7 +6,7 @@
 #include <QVector>
 #include <QStringListModel>
 #include "dance_t.h"
-//#include "new_music_d.h"
+#include "new_music_d.h"
 
 namespace Ui {
 class edit_list_d;
@@ -36,6 +36,7 @@ public slots:
     void save_dance();
     void add_music_button();
     void delete_music_button();
+    void add_music(QString music);
 private:
     Ui::edit_list_d *ui;
     QVector<dance_t*>* dance_vector;
@@ -43,6 +44,7 @@ private:
     //QListView ui->listView_music;
     QStringListModel *music_model;
     QStringList current_music;
+    new_music_d *new_music;
 };
 
 #endif // EDIT_LIST_D_H
