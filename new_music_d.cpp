@@ -41,13 +41,13 @@ void new_music_d::add_choice(QModelIndex choice)
 {
     if (choice.data().toString().contains(".mp3"))
     {
-        emit add_music(ui->treeView->currentIndex().data().toString());
+        emit add_music(tr(ui->treeView->currentIndex().data().toString().toLocal8Bit().data()));
         accept();
     }
 }
 
 void new_music_d::create_music()
 {
-    emit add_music(ui->treeView->currentIndex().data().toString());
+    emit add_music(tr(ui->treeView->currentIndex().data().toString().toLocal8Bit().data()));
     accept();
 }

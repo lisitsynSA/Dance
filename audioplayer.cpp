@@ -1,4 +1,5 @@
 #include "audioplayer.h"
+#include <QTextCodec>
 
 audioplayer::audioplayer(QWidget *parent) :
     QWidget(parent),
