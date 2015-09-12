@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QPushButton>
+#include <QMessageBox>
 
 #include "new_music_d.h"
 #include "ui_new_music_d.h"
@@ -10,7 +11,17 @@ new_music_d::new_music_d(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //CHECK DIR
+    QDir dir = QDir::current();
+    if (!dir.exists("music"))
+        if(!dir.mkdir("music"))
+            QMessageBox::warning(this, tr("Dance class"),
+                                 tr("Cannot create directory 'music'."));
+
     model = new QFileSystemModel;
+    model->setRootPath(dir.absoluteFilePath("music"));
+    update_tree();
+
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(check_choice(QModelIndex)));
     connect(ui->treeView, SIGNAL(doubleClicked(QModelIndex)),
@@ -25,9 +36,8 @@ new_music_d::~new_music_d()
 }
 void new_music_d::update_tree()
 {
-    qDebug() << QDir::currentPath();
-    model->setRootPath(QDir::currentPath());
     ui->treeView->setModel(model);
+    ui->treeView->setRootIndex(model->index(QDir::current().absoluteFilePath("music")));
 }
 
 void new_music_d::check_choice(QModelIndex choice)
