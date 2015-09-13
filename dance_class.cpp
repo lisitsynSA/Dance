@@ -82,8 +82,8 @@ void dance_class::load_button()
     QString buffer = current_date.toString("dd.MM.yy (dddd)") + ":\n";
     QStringList::const_iterator it;
     for (it = current_class.constBegin(); it != current_class.constEnd(); it++)
-        buffer = buffer + "\n" + (*it).toLocal8Bit().constData();
-    buffer = buffer + "\n\n" + tr("Created by KIM MIPT(LisitSA)");
+        buffer = buffer + "\n" + tr((*it).toLocal8Bit().data());
+    buffer = buffer + "\n\n" + tr("Created by DanceClass");
     clipboard->setText(buffer);
     emit status_bar(tr("Loaded to the clipboard"));
 }
