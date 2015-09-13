@@ -185,10 +185,16 @@ void dance_list::list_edit_button()
         connect(edit_list_dialog, SIGNAL(delete_dance(int)),
                 this, SLOT(list_delete(int)));
     }
-
-    edit_list_dialog->show();
-    edit_list_dialog->raise();
-    edit_list_dialog->activateWindow();
+    if (dance_vector.isEmpty())
+    {
+        QMessageBox::warning(this, tr("Dance list"),
+                             tr("Dictionary of dances is empty. Please create dance."));
+        list_new_button();
+    } else {
+        edit_list_dialog->show();
+        edit_list_dialog->raise();
+        edit_list_dialog->activateWindow();
+    }
 }
 
 void dance_list::open_dance(QString dance)

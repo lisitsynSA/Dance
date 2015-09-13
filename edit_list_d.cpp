@@ -68,7 +68,7 @@ void edit_list_d::delete_button()
 {
     if (dance_vector->size())
     {
-        //accept();
+        accept();
         emit delete_dance(ui->comboBox->currentIndex());
     }
 }
