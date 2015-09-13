@@ -1,5 +1,10 @@
 QT += phonon
 
+win32 {
+    RC_FILE += file.rc
+    OTHER_FILES += file.rc
+}
+
 HEADERS += \
     main_window.h \
     dance_class.h \
@@ -30,3 +35,6 @@ FORMS += \
 
 RESOURCES += \
     dance_class.qrc
+
+OTHER_FILES += \
+    file.rc

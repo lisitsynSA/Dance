@@ -41,8 +41,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Dance Class"),
-            tr("<h2>Dance Class 1.0</h2>"
-               "<p>Copyright &copy; 2015 Lisitsyn Sergey(KIM MIPT)."
+            tr("<h2>Dance Class 1.0(Beta)</h2>"
+               "<p>Copyright &copy; 2015 Lisitsyn Sergey(fox9508@mail.ru)."
                "<p>Dance Class is a small application that "
                "helps to plan and track training."));
 }
