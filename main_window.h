@@ -57,6 +57,7 @@ private:
     QAction *showTimeAction;
     QAction *aboutAction;
     QAction *aboutQtAction;
+    QAction *playAction;
 };
 
 #endif

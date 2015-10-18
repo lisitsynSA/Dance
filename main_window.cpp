@@ -121,6 +121,12 @@ void MainWindow::createActions()
     aboutQtAction->setStatusTip(tr("Show the Qt library's About box"));
     connect(aboutQtAction, SIGNAL(triggered()),
             qApp, SLOT(aboutQt()));
+
+    playAction = new QAction(tr("Play"), this);
+    playAction->setShortcut(Qt::Key_Space);
+    playAction->setStatusTip(tr("Play current music"));
+    connect(playAction, SIGNAL(triggered()),
+            danceclass, SLOT(play_music()));
 }
 
 void MainWindow::createMenus()
@@ -131,6 +137,7 @@ void MainWindow::createMenus()
     dance_classMenu->addAction(deleteAction);
     dance_classMenu->addAction(listNewAction);
     dance_classMenu->addSeparator();
+    dance_classMenu->addAction(playAction);
     dance_classMenu->addAction(exitAction);
 
     optionsMenu = menuBar()->addMenu(tr("&Options"));

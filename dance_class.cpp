@@ -377,3 +377,8 @@ void dance_class::open_dance(QModelIndex index)
     check_dance(index.data().toString());
     dancelist->open_dance(index.data().toString());
 }
+
+void dance_class::play_music()
+{
+    player->play_button();
+}
